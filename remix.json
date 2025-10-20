@@ -1,0 +1,128 @@
+{
+  "compiler": {
+    "version": "0.8.19"
+  },
+  "language": "Solidity",
+  "outputSelection": {
+    "*": {
+      "*": [
+        "evm.bytecode.object",
+        "evm.deployedBytecode.object",
+        "abi"
+      ]
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "evmVersion": "london",
+    "viaIR": false,
+    "debug": {
+      "revertStrings": "default"
+    }
+  },
+  "sources": {
+    "contracts/interfaces/IERC20.sol": {
+      "urls": [
+        "bzz-raw://"
+      ]
+    },
+    "contracts/interfaces/IERC20Metadata.sol": {
+      "urls": [
+        "bzz-raw://"
+      ]
+    },
+    "contracts/interfaces/IERC721.sol": {
+      "urls": [
+        "bzz-raw://"
+      ]
+    },
+    "contracts/interfaces/IERC721Receiver.sol": {
+      "urls": [
+        "bzz-raw://"
+      ]
+    },
+    "contracts/interfaces/IERC721Metadata.sol": {
+      "urls": [
+        "bzz-raw://"
+      ]
+    },
+    "contracts/interfaces/IERC1155.sol": {
+      "urls": [
+        "bzz-raw://"
+      ]
+    },
+    "contracts/interfaces/IERC165.sol": {
+      "urls": [
+        "bzz-raw://"
+      ]
+    },
+    "contracts/tokens/ERC20.sol": {
+      "urls": [
+        "bzz-raw://"
+      ]
+    },
+    "contracts/tokens/ERC721.sol": {
+      "urls": [
+        "bzz-raw://"
+      ]
+    },
+    "contracts/utils/Context.sol": {
+      "urls": [
+        "bzz-raw://"
+      ]
+    },
+    "contracts/utils/Strings.sol": {
+      "urls": [
+        "bzz-raw://"
+      ]
+    },
+    "contracts/utils/Address.sol": {
+      "urls": [
+        "bzz-raw://"
+      ]
+    },
+    "contracts/utils/Math.sol": {
+      "urls": [
+        "bzz-raw://"
+      ]
+    },
+    "contracts/utils/ERC165.sol": {
+      "urls": [
+        "bzz-raw://"
+      ]
+    },
+    "contracts/access/Ownable.sol": {
+      "urls": [
+        "bzz-raw://"
+      ]
+    },
+    "contracts/security/Pausable.sol": {
+      "urls": [
+        "bzz-raw://"
+      ]
+    },
+    "contracts/security/ReentrancyGuard.sol": {
+      "urls": [
+        "bzz-raw://"
+      ]
+    },
+    "contracts/examples/BaseToken.sol": {
+      "urls": [
+        "bzz-raw://"
+      ]
+    },
+    "contracts/examples/BaseNFT.sol": {
+      "urls": [
+        "bzz-raw://"
+      ]
+    },
+    "contracts/examples/BaseStaking.sol": {
+      "urls": [
+        "bzz-raw://"
+      ]
+    }
+  }
+}
