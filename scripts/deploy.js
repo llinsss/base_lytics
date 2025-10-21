@@ -9,6 +9,9 @@ async function main() {
   const BaseStaking = await hre.ethers.getContractFactory("BaseStaking");
   const BalanceManager = await hre.ethers.getContractFactory("BalanceManager");
   const BalanceTracker = await hre.ethers.getContractFactory("BalanceTracker");
+  const BaseDEX = await hre.ethers.getContractFactory("BaseDEX");
+  const BaseMarketplace = await hre.ethers.getContractFactory("BaseMarketplace");
+  const BaseVesting = await hre.ethers.getContractFactory("BaseVesting");
 
   // Get the deployer account
   const [deployer] = await hre.ethers.getSigners();
@@ -62,10 +65,41 @@ async function main() {
   const balanceTrackerAddress = await balanceTracker.getAddress();
   console.log("✅ BalanceTracker deployed to:", balanceTrackerAddress);
 
+  // Deploy BaseDEX
+  console.log("\n💱 Deploying BaseDEX...");
+  const baseDEX = await BaseDEX.deploy();
+  await baseDEX.waitForDeployment();
+  const baseDEXAddress = await baseDEX.getAddress();
+  console.log("✅ BaseDEX deployed to:", baseDEXAddress);
+
+  // Deploy BaseMarketplace
+  console.log("\n🛒 Deploying BaseMarketplace...");
+  const baseMarketplace = await BaseMarketplace.deploy();
+  await baseMarketplace.waitForDeployment();
+  const baseMarketplaceAddress = await baseMarketplace.getAddress();
+  console.log("✅ BaseMarketplace deployed to:", baseMarketplaceAddress);
+
+  // Deploy BaseVesting
+  console.log("\n⏰ Deploying BaseVesting...");
+  const baseVesting = await BaseVesting.deploy(baseTokenAddress);
+  await baseVesting.waitForDeployment();
+  const baseVestingAddress = await baseVesting.getAddress();
+  console.log("✅ BaseVesting deployed to:", baseVestingAddress);
+
+  // Configure contracts
+  console.log("\n🔧 Configuring contracts...");
+  
   // Add BaseToken to BalanceTracker's supported tokens
-  console.log("\n🔗 Adding BaseToken to BalanceTracker...");
   await balanceTracker.addSupportedToken(baseTokenAddress);
   console.log("✅ BaseToken added to BalanceTracker");
+  
+  // Add BaseToken to BaseMarketplace's supported payment tokens
+  await baseMarketplace.addSupportedPaymentToken(baseTokenAddress);
+  console.log("✅ BaseToken added to BaseMarketplace");
+  
+  // Create DEX pool for BaseToken/ETH
+  await baseDEX.createPool(baseTokenAddress, "0x0000000000000000000000000000000000000000", 0);
+  console.log("✅ BaseToken/ETH pool created on DEX");
 
   // Display deployment summary
   console.log("\n📋 Deployment Summary:");
@@ -75,6 +109,9 @@ async function main() {
   console.log("BaseStaking Address:", baseStakingAddress);
   console.log("BalanceManager Address:", balanceManagerAddress);
   console.log("BalanceTracker Address:", balanceTrackerAddress);
+  console.log("BaseDEX Address:", baseDEXAddress);
+  console.log("BaseMarketplace Address:", baseMarketplaceAddress);
+  console.log("BaseVesting Address:", baseVestingAddress);
   console.log("Network:", hre.network.name);
   console.log("=" .repeat(50));
 
@@ -88,7 +125,10 @@ async function main() {
       BaseNFT: baseNFTAddress,
       BaseStaking: baseStakingAddress,
       BalanceManager: balanceManagerAddress,
-      BalanceTracker: balanceTrackerAddress
+      BalanceTracker: balanceTrackerAddress,
+      BaseDEX: baseDEXAddress,
+      BaseMarketplace: baseMarketplaceAddress,
+      BaseVesting: baseVestingAddress
     }
   };
 
