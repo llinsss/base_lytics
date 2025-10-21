@@ -12,6 +12,7 @@ async function main() {
   const BaseDEX = await hre.ethers.getContractFactory("BaseDEX");
   const BaseMarketplace = await hre.ethers.getContractFactory("BaseMarketplace");
   const BaseVesting = await hre.ethers.getContractFactory("BaseVesting");
+  const BaseGovernance = await hre.ethers.getContractFactory("BaseGovernance");
 
   // Get the deployer account
   const [deployer] = await hre.ethers.getSigners();
@@ -86,6 +87,13 @@ async function main() {
   const baseVestingAddress = await baseVesting.getAddress();
   console.log("✅ BaseVesting deployed to:", baseVestingAddress);
 
+  // Deploy BaseGovernance
+  console.log("\n🗳️ Deploying BaseGovernance...");
+  const baseGovernance = await BaseGovernance.deploy(baseTokenAddress);
+  await baseGovernance.waitForDeployment();
+  const baseGovernanceAddress = await baseGovernance.getAddress();
+  console.log("✅ BaseGovernance deployed to:", baseGovernanceAddress);
+
   // Configure contracts
   console.log("\n🔧 Configuring contracts...");
   
@@ -112,6 +120,7 @@ async function main() {
   console.log("BaseDEX Address:", baseDEXAddress);
   console.log("BaseMarketplace Address:", baseMarketplaceAddress);
   console.log("BaseVesting Address:", baseVestingAddress);
+  console.log("BaseGovernance Address:", baseGovernanceAddress);
   console.log("Network:", hre.network.name);
   console.log("=" .repeat(50));
 
@@ -128,7 +137,8 @@ async function main() {
       BalanceTracker: balanceTrackerAddress,
       BaseDEX: baseDEXAddress,
       BaseMarketplace: baseMarketplaceAddress,
-      BaseVesting: baseVestingAddress
+      BaseVesting: baseVestingAddress,
+      BaseGovernance: baseGovernanceAddress
     }
   };
 
