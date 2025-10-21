@@ -7,6 +7,8 @@ async function main() {
   const BaseToken = await hre.ethers.getContractFactory("BaseToken");
   const BaseNFT = await hre.ethers.getContractFactory("BaseNFT");
   const BaseStaking = await hre.ethers.getContractFactory("BaseStaking");
+  const BalanceManager = await hre.ethers.getContractFactory("BalanceManager");
+  const BalanceTracker = await hre.ethers.getContractFactory("BalanceTracker");
 
   // Get the deployer account
   const [deployer] = await hre.ethers.getSigners();
@@ -42,12 +44,37 @@ async function main() {
   const baseStakingAddress = await baseStaking.getAddress();
   console.log("✅ BaseStaking deployed to:", baseStakingAddress);
 
+  // Deploy BalanceManager
+  console.log("\n📊 Deploying BalanceManager...");
+  const balanceManager = await BalanceManager.deploy(
+    "Balance Manager Token", // name
+    "BMT",                  // symbol
+    hre.ethers.parseEther("500000") // initial supply: 500K tokens
+  );
+  await balanceManager.waitForDeployment();
+  const balanceManagerAddress = await balanceManager.getAddress();
+  console.log("✅ BalanceManager deployed to:", balanceManagerAddress);
+
+  // Deploy BalanceTracker
+  console.log("\n🔍 Deploying BalanceTracker...");
+  const balanceTracker = await BalanceTracker.deploy();
+  await balanceTracker.waitForDeployment();
+  const balanceTrackerAddress = await balanceTracker.getAddress();
+  console.log("✅ BalanceTracker deployed to:", balanceTrackerAddress);
+
+  // Add BaseToken to BalanceTracker's supported tokens
+  console.log("\n🔗 Adding BaseToken to BalanceTracker...");
+  await balanceTracker.addSupportedToken(baseTokenAddress);
+  console.log("✅ BaseToken added to BalanceTracker");
+
   // Display deployment summary
   console.log("\n📋 Deployment Summary:");
   console.log("=" .repeat(50));
   console.log("BaseToken Address:", baseTokenAddress);
   console.log("BaseNFT Address:", baseNFTAddress);
   console.log("BaseStaking Address:", baseStakingAddress);
+  console.log("BalanceManager Address:", balanceManagerAddress);
+  console.log("BalanceTracker Address:", balanceTrackerAddress);
   console.log("Network:", hre.network.name);
   console.log("=" .repeat(50));
 
@@ -59,7 +86,9 @@ async function main() {
     contracts: {
       BaseToken: baseTokenAddress,
       BaseNFT: baseNFTAddress,
-      BaseStaking: baseStakingAddress
+      BaseStaking: baseStakingAddress,
+      BalanceManager: balanceManagerAddress,
+      BalanceTracker: balanceTrackerAddress
     }
   };
 
