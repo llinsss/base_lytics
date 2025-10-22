@@ -24,26 +24,27 @@ Utility Libraries (`contracts/utils/`)
 - Math.sol: Mathematical operations and rounding utilities
 - ERC165.sol: ERC165 interface detection implementation
 
-### Access Control (`contracts/access/`)
-- **Ownable.sol**: Basic ownership access control pattern
+ Access Control (`contracts/access/`)
+- *wnable.sol: Basic ownership access control pattern
 
-### Security (`contracts/security/`)
-- **Pausable.sol**: Emergency pause functionality
-- **ReentrancyGuard.sol**: Protection against reentrancy attacks
+ Security (`contracts/security/`)
+- Pausable.sol: Emergency pause functionality
+- ReentrancyGuard.sol: Protection against reentrancy attacks
 
-### Examples (`contracts/examples/`)
-- **BaseToken.sol**: Example ERC20 token with minting capabilities
-- **BaseNFT.sol**: Example ERC721 NFT collection with batch minting
-- **BaseStaking.sol**: Example token staking contract with rewards
+Examples (`contracts/examples/`)
+- BaseToken.sol: Example ERC20 token with minting capabilities
+- BaseNFT.sol: Example ERC721 NFT collection with batch minting
+- BaseStaking.sol: Example token staking contract with rewards
 
-## Usage
+Usage
 
 These contracts can be used as base implementations for your own smart contracts. Simply inherit from the appropriate contract and override or extend functionality as needed.
 
-### Example Usage
+ Example Usage
 
-```solidity
-// SPDX-License-Identifier: MIT
+solidity
+
+SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
 import "./tokens/ERC20.sol";
@@ -58,7 +59,7 @@ contract MyToken is ERC20, Ownable {
         _mint(to, amount);
     }
 }
-```
+
 
 ## Security
 
@@ -69,6 +70,4 @@ All contracts follow security best practices:
 - Gas optimization
 - Emergency pause functionality
 
-## License
-
-MIT License - see LICENSE file for details.
+MIT License 

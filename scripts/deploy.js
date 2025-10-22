@@ -105,9 +105,10 @@ async function main() {
   await baseMarketplace.addSupportedPaymentToken(baseTokenAddress);
   console.log("✅ BaseToken added to BaseMarketplace");
   
-  // Create DEX pool for BaseToken/ETH
-  await baseDEX.createPool(baseTokenAddress, "0x0000000000000000000000000000000000000000", 0);
-  console.log("✅ BaseToken/ETH pool created on DEX");
+  // Create DEX pool for BaseToken/ETH (using WETH address for Base Sepolia)
+  const WETH_ADDRESS = "0x4200000000000000000000000000000000000006"; // Base Sepolia WETH
+  await baseDEX.createPool(baseTokenAddress, WETH_ADDRESS, 0);
+  console.log("✅ BaseToken/WETH pool created on DEX");
 
   // Display deployment summary
   console.log("\n📋 Deployment Summary:");
