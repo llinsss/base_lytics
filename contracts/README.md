@@ -2,27 +2,27 @@
 
 This directory contains base smart contracts for blockchain applications.
 
-## Contracts Overview
+Contracts Overview
 
-### Interfaces (`contracts/interfaces/`)
-- **IERC20.sol**: ERC20 token standard interface
-- **IERC20Metadata.sol**: ERC20 metadata extension interface
-- **IERC721.sol**: ERC721 NFT standard interface
-- **IERC721Receiver.sol**: ERC721 receiver interface
-- **IERC721Metadata.sol**: ERC721 metadata extension interface
-- **IERC1155.sol**: ERC1155 multi-token standard interface
-- **IERC165.sol**: ERC165 interface detection standard
+Interfaces (`contracts/interfaces/`)
+- IERC20.sol: ERC20 token standard interface
+- IERC20Metadata.sol: ERC20 metadata extension interface
+- IERC721.sol: ERC721 NFT standard interface
+- IERC721Receiver.sol: ERC721 receiver interface
+- IERC721Metadata.sol: ERC721 metadata extension interface
+- IERC1155.sol: ERC1155 multi-token standard interface
+- IERC165.sol: ERC165 interface detection standard
 
-### Token Implementations (`contracts/tokens/`)
-- **ERC20.sol**: Complete ERC20 token implementation with metadata
-- **ERC721.sol**: Complete ERC721 NFT implementation with metadata
+Token Implementations (`contracts/tokens/`)
+- ERC20.sol: Complete ERC20 token implementation with metadata
+- ERC721.sol: Complete ERC721 NFT implementation with metadata
 
-### Utility Libraries (`contracts/utils/`)
-- **Context.sol**: Safe message sender and data access
-- **Strings.sol**: String manipulation utilities
-- **Address.sol**: Address validation and interaction utilities
-- **Math.sol**: Mathematical operations and rounding utilities
-- **ERC165.sol**: ERC165 interface detection implementation
+Utility Libraries (`contracts/utils/`)
+- Context.sol: Safe message sender and data access
+- Strings.sol: String manipulation utilities
+- Address.sol: Address validation and interaction utilities
+- Math.sol: Mathematical operations and rounding utilities
+- ERC165.sol: ERC165 interface detection implementation
 
 ### Access Control (`contracts/access/`)
 - **Ownable.sol**: Basic ownership access control pattern

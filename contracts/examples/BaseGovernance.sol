@@ -85,6 +85,13 @@ contract BaseGovernance is Ownable, ReentrancyGuard, Pausable {
 
     constructor(address _governanceToken) {
         governanceToken = _governanceToken;
+        
+        // Set up EIP-712 domain separator
+        uint256 chainId;
+        assembly {
+            chainId := chainid()
+        }
+        DOMAIN_SEPARATOR = keccak256(abi.encode(DOMAIN_TYPEHASH, keccak256(bytes("BaseGovernance")), chainId, address(this)));
     }
 
     /**
@@ -285,9 +292,9 @@ contract BaseGovernance is Ownable, ReentrancyGuard, Pausable {
     /**
      * @dev Get the current state of a proposal
      * @param proposalId Proposal ID
-     * @return state Current proposal state
+     * @return proposalState Current proposal state
      */
-    function state(uint256 proposalId) public view returns (ProposalState state) {
+    function state(uint256 proposalId) public view returns (ProposalState proposalState) {
         require(proposalCount >= proposalId, "BaseGovernance: invalid proposal id");
         Proposal memory proposal = proposals[proposalId];
         if (proposal.canceled) {
@@ -360,16 +367,16 @@ contract BaseGovernance is Ownable, ReentrancyGuard, Pausable {
 
     /**
      * @dev Get governance parameters
-     * @return votingDelay Voting delay in blocks
-     * @return votingPeriod Voting period in blocks
-     * @return quorumVotes Quorum requirement
-     * @return proposalThreshold Proposal threshold
+     * @return delay Voting delay in blocks
+     * @return period Voting period in blocks
+     * @return quorum Quorum requirement
+     * @return threshold Proposal threshold
      */
     function getGovernanceParams() external view returns (
-        uint256 votingDelay,
-        uint256 votingPeriod,
-        uint256 quorumVotes,
-        uint256 proposalThreshold
+        uint256 delay,
+        uint256 period,
+        uint256 quorum,
+        uint256 threshold
     ) {
         return (votingDelay, votingPeriod, quorumVotes, proposalThreshold);
     }
@@ -481,15 +488,4 @@ contract BaseGovernance is Ownable, ReentrancyGuard, Pausable {
     bytes32 public constant DOMAIN_TYPEHASH = keccak256("EIP712Domain(string name,uint256 chainId,address verifyingContract)");
     bytes32 public constant DELEGATION_TYPEHASH = keccak256("Delegation(address delegatee,uint256 nonce,uint256 expiry)");
     bytes32 public immutable DOMAIN_SEPARATOR;
-
-    constructor(address _governanceToken) {
-        governanceToken = _governanceToken;
-        
-        // Set up EIP-712 domain separator
-        uint256 chainId;
-        assembly {
-            chainId := chainid()
-        }
-        DOMAIN_SEPARATOR = keccak256(abi.encode(DOMAIN_TYPEHASH, keccak256(bytes("BaseGovernance")), chainId, address(this)));
-    }
 }
