@@ -748,8 +748,8 @@
       ]
     },
     "/Users/user/Documents/baselytics/contracts/examples/BaseGovernance.sol": {
-      "lastModificationDate": 1761162742740,
-      "contentHash": "8d3a42e68dfdd8e956fb9ef44c334b41",
+      "lastModificationDate": 1761162814777,
+      "contentHash": "bf316232a09e47a554ad62a927665212",
       "sourceName": "contracts/examples/BaseGovernance.sol",
       "solcConfig": {
         "version": "0.8.19",

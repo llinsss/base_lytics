@@ -232,11 +232,12 @@ contract BaseGovernance is Ownable, ReentrancyGuard, Pausable {
         bytes32 r,
         bytes32 s
     ) external {
+        require(expiry >= block.timestamp, "BaseGovernance: signature expired");
+        
         bytes32 structHash = keccak256(abi.encode(DELEGATION_TYPEHASH, delegator, delegatee, nonce, expiry));
         bytes32 hash = keccak256(abi.encodePacked("\x19\x01", DOMAIN_SEPARATOR, structHash));
         address signer = ecrecover(hash, v, r, s);
         require(signer == delegator, "BaseGovernance: invalid signature");
-        require(expiry >= block.timestamp, "BaseGovernance: signature expired");
 
         _delegate(delegator, delegatee);
     }
@@ -258,7 +259,7 @@ contract BaseGovernance is Ownable, ReentrancyGuard, Pausable {
      * @return votes Votes balance at block
      */
     function getVotes(address account, uint256 blockNumber) public view returns (uint256 votes) {
-        require(blockNumber < block.number, "BaseGovernance: not yet determined");
+        require(blockNumber <= block.number, "BaseGovernance: not yet determined");
 
         uint256 nCheckpoints = numCheckpoints[account];
         if (nCheckpoints == 0) {
