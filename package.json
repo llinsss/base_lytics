@@ -6,6 +6,13 @@
   "scripts": {
     "compile": "hardhat compile",
     "test": "hardhat test",
+    "test:basic": "node scripts/test-runner.js basic",
+    "test:enhanced": "node scripts/test-runner.js enhanced",
+    "test:integration": "node scripts/test-runner.js integration",
+    "test:security": "node scripts/test-runner.js security",
+    "test:all": "node scripts/test-runner.js all",
+    "coverage": "node scripts/coverage-report.js",
+    "gas-report": "REPORT_GAS=true hardhat test",
     "deploy": "hardhat run scripts/deploy.js",
     "verify": "hardhat verify"
   },
@@ -23,7 +30,9 @@
   "license": "MIT",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^3.0.0",
-    "hardhat": "^2.17.0"
+    "hardhat": "^2.17.0",
+    "solidity-coverage": "^0.8.4",
+    "hardhat-gas-reporter": "^1.0.9"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.9.0",
