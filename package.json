@@ -20,7 +20,13 @@
     "stake": "hardhat run scripts/interact/stake-tokens.js",
     "nft": "hardhat run scripts/interact/nft-operations.js",
     "admin": "hardhat run scripts/admin/contract-admin.js",
-    "journey": "hardhat run scripts/interact/user-journey.js"
+    "journey": "hardhat run scripts/interact/user-journey.js",
+    "monitor": "hardhat run scripts/monitor/event-listener.js",
+    "stats": "hardhat run scripts/analytics/usage-stats.js",
+    "revenue": "hardhat run scripts/analytics/revenue-tracker.js",
+    "alerts": "hardhat run scripts/alerts/threshold-monitor.js",
+    "summary": "hardhat run scripts/reports/daily-summary.js",
+    "gas-track": "hardhat run scripts/monitor/gas-tracker.js"
   },
   "keywords": [
     "solidity",
