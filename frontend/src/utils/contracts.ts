@@ -1,11 +1,22 @@
 import { ContractAddresses } from '../types/contracts';
+import { useContractLoader } from '../hooks/useContractLoader';
 
-// Contract addresses - update these with your deployed addresses
-export const CONTRACT_ADDRESSES: ContractAddresses = {
-  BaseToken: '0x0000000000000000000000000000000000000000',
-  BaseNFT: '0x0000000000000000000000000000000000000000',
-  BaseStaking: '0x0000000000000000000000000000000000000000',
-};
+// Dynamic contract addresses loaded from deployment
+export function useContractAddresses(): ContractAddresses {
+  const { getContractAddress } = useContractLoader();
+  
+  return {
+    BaseToken: getContractAddress('BaseToken'),
+    BaseNFT: getContractAddress('BaseNFT'),
+    BaseStaking: getContractAddress('BaseStaking'),
+    BalanceManager: getContractAddress('BalanceManager'),
+    BalanceTracker: getContractAddress('BalanceTracker'),
+    BaseDEX: getContractAddress('BaseDEX'),
+    BaseMarketplace: getContractAddress('BaseMarketplace'),
+    BaseVesting: getContractAddress('BaseVesting'),
+    BaseGovernance: getContractAddress('BaseGovernance'),
+  };
+}
 
 // Contract ABIs (minimal for demo - add full ABIs from artifacts)
 export const BASE_TOKEN_ABI = [
