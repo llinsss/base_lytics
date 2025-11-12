@@ -4,8 +4,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createConfig, http } from 'wagmi';
 import { baseSepolia, base } from 'wagmi/chains';
 import { injected, walletConnect } from 'wagmi/connectors';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Dashboard } from './pages/Dashboard';
+import { Status } from './pages/Status';
 import { WalletConnect } from './components/WalletConnect';
 
 // Wagmi configuration
@@ -26,15 +27,41 @@ const config = createConfig({
 const queryClient = new QueryClient();
 
 function Header() {
+  const location = useLocation();
+  
   return (
     <header className="bg-white shadow-sm border-b">
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-base-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">BL</span>
-            </div>
-            <h1 className="text-xl font-bold text-gray-900">BaseLytics</h1>
+          <div className="flex items-center gap-6">
+            <Link to="/" className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-base-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">BL</span>
+              </div>
+              <h1 className="text-xl font-bold text-gray-900">BaseLytics</h1>
+            </Link>
+            <nav className="flex gap-4">
+              <Link 
+                to="/" 
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  location.pathname === '/' 
+                    ? 'bg-base-100 text-base-700' 
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                Dashboard
+              </Link>
+              <Link 
+                to="/status" 
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  location.pathname === '/status' 
+                    ? 'bg-base-100 text-base-700' 
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                Status
+              </Link>
+            </nav>
           </div>
           <WalletConnect />
         </div>
@@ -70,6 +97,7 @@ function App() {
             <main>
               <Routes>
                 <Route path="/" element={<Dashboard />} />
+                <Route path="/status" element={<Status />} />
               </Routes>
             </main>
             <Footer />
