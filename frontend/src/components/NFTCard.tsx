@@ -2,17 +2,29 @@ import React from 'react';
 import { useAccount } from 'wagmi';
 import { formatEther } from 'viem';
 import { useNFTInfo, useNFTBalance, useContractWrite } from '../hooks/useContracts';
-import { CONTRACT_ADDRESSES, BASE_NFT_ABI } from '../utils/contracts';
+import { useContractAddresses } from '../utils/contracts';
+import { BASE_NFT_ABI } from '../utils/contracts';
+import { useTransactionNotifications } from '../hooks/useTransactionNotifications';
 
 export function NFTCard() {
   const { address } = useAccount();
+  const contractAddresses = useContractAddresses();
   const nftInfo = useNFTInfo();
   const balance = useNFTBalance(address);
-  const { writeContract, isPending, isConfirming, isSuccess } = useContractWrite();
+  const { writeContract, isPending, isConfirming, isSuccess, hash, error } = useContractWrite();
+
+  useTransactionNotifications(
+    { hash, isPending, isConfirming, isSuccess, error },
+    {
+      pendingTitle: 'NFT Mint Submitted',
+      successTitle: 'NFT Minted Successfully',
+      errorTitle: 'NFT Mint Failed'
+    }
+  );
 
   const handleMint = () => {
     writeContract({
-      address: CONTRACT_ADDRESSES.BaseNFT,
+      address: contractAddresses.BaseNFT,
       abi: BASE_NFT_ABI,
       functionName: 'mint',
       value: nftInfo.price,
@@ -73,9 +85,7 @@ export function NFTCard() {
             : `Mint NFT (${nftInfo.price ? formatEther(nftInfo.price) : '0'} ETH)`
           }
         </button>
-        {isSuccess && (
-          <p className="text-green-600 text-sm mt-2">NFT minted successfully!</p>
-        )}
+
       </div>
     </div>
   );

@@ -2,22 +2,38 @@ import React, { useState } from 'react';
 import { useAccount } from 'wagmi';
 import { formatEther, parseEther } from 'viem';
 import { useTokenInfo, useTokenBalance, useContractWrite } from '../hooks/useContracts';
-import { CONTRACT_ADDRESSES, BASE_TOKEN_ABI } from '../utils/contracts';
+import { useContractAddresses } from '../utils/contracts';
+import { BASE_TOKEN_ABI } from '../utils/contracts';
+import { useTransactionNotifications } from '../hooks/useTransactionNotifications';
 
 export function TokenCard() {
   const { address } = useAccount();
+  const contractAddresses = useContractAddresses();
   const tokenInfo = useTokenInfo();
   const balance = useTokenBalance(address);
-  const { writeContract, isPending, isConfirming, isSuccess } = useContractWrite();
+  const { writeContract, isPending, isConfirming, isSuccess, hash, error } = useContractWrite();
   
   const [transferTo, setTransferTo] = useState('');
   const [transferAmount, setTransferAmount] = useState('');
+
+  useTransactionNotifications(
+    { hash, isPending, isConfirming, isSuccess, error },
+    {
+      pendingTitle: 'Token Transfer Submitted',
+      successTitle: 'Tokens Transferred Successfully',
+      errorTitle: 'Token Transfer Failed',
+      onSuccess: () => {
+        setTransferTo('');
+        setTransferAmount('');
+      }
+    }
+  );
 
   const handleTransfer = () => {
     if (!transferTo || !transferAmount) return;
     
     writeContract({
-      address: CONTRACT_ADDRESSES.BaseToken,
+      address: contractAddresses.BaseToken,
       abi: BASE_TOKEN_ABI,
       functionName: 'transfer',
       args: [transferTo as `0x${string}`, parseEther(transferAmount)],
@@ -87,9 +103,7 @@ export function TokenCard() {
           >
             {isPending || isConfirming ? 'Processing...' : 'Transfer'}
           </button>
-          {isSuccess && (
-            <p className="text-green-600 text-sm">Transfer successful!</p>
-          )}
+
         </div>
       </div>
     </div>

@@ -6,9 +6,12 @@ import { baseSepolia, base } from 'wagmi/chains';
 import { injected, walletConnect } from 'wagmi/connectors';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Dashboard } from './pages/Dashboard';
-import { Status } from './pages/Status';
+import { Analytics } from './pages/Analytics';
 import { Activity } from './pages/Activity';
+import { Status } from './pages/Status';
 import { WalletConnect } from './components/WalletConnect';
+import { NotificationProvider } from './contexts/NotificationContext';
+import { NotificationContainer } from './components/notifications/NotificationContainer';
 
 // Wagmi configuration
 const config = createConfig({
@@ -51,6 +54,16 @@ function Header() {
                 }`}
               >
                 Dashboard
+              </Link>
+              <Link 
+                to="/analytics" 
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  location.pathname === '/analytics' 
+                    ? 'bg-base-100 text-base-700' 
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                Analytics
               </Link>
               <Link 
                 to="/activity" 
@@ -102,19 +115,23 @@ function App() {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <Router>
-          <div className="min-h-screen bg-gray-50">
-            <Header />
-            <main>
-              <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/activity" element={<Activity />} />
-                <Route path="/status" element={<Status />} />
-              </Routes>
-            </main>
-            <Footer />
-          </div>
-        </Router>
+        <NotificationProvider>
+          <Router>
+            <div className="min-h-screen bg-gray-50">
+              <Header />
+              <main>
+                <Routes>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/analytics" element={<Analytics />} />
+                  <Route path="/activity" element={<Activity />} />
+                  <Route path="/status" element={<Status />} />
+                </Routes>
+              </main>
+              <Footer />
+              <NotificationContainer />
+            </div>
+          </Router>
+        </NotificationProvider>
       </QueryClientProvider>
     </WagmiProvider>
   );
