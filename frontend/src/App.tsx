@@ -7,6 +7,7 @@ import { injected, walletConnect } from 'wagmi/connectors';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Dashboard } from './pages/Dashboard';
 import { Status } from './pages/Status';
+import { Activity } from './pages/Activity';
 import { WalletConnect } from './components/WalletConnect';
 
 // Wagmi configuration
@@ -50,6 +51,16 @@ function Header() {
                 }`}
               >
                 Dashboard
+              </Link>
+              <Link 
+                to="/activity" 
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  location.pathname === '/activity' 
+                    ? 'bg-base-100 text-base-700' 
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                Activity
               </Link>
               <Link 
                 to="/status" 
@@ -97,6 +108,7 @@ function App() {
             <main>
               <Routes>
                 <Route path="/" element={<Dashboard />} />
+                <Route path="/activity" element={<Activity />} />
                 <Route path="/status" element={<Status />} />
               </Routes>
             </main>
