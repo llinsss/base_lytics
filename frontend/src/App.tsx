@@ -11,6 +11,7 @@ import { Activity } from './pages/Activity';
 import { Status } from './pages/Status';
 import { Settings } from './pages/Settings';
 import { WalletConnect } from './components/WalletConnect';
+import { NetworkSwitcher } from './components/NetworkSwitcher';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { SettingsProvider } from './contexts/SettingsContext';
 import { NotificationContainer } from './components/notifications/NotificationContainer';
@@ -101,7 +102,10 @@ function Header() {
               </Link>
             </nav>
           </div>
-          <WalletConnect />
+          <div className="flex items-center gap-4">
+            <NetworkSwitcher />
+            <WalletConnect />
+          </div>
         </div>
       </div>
     </header>
