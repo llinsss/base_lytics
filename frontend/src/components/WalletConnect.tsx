@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAccount, useConnect, useDisconnect, useChainId, useSwitchChain } from 'wagmi';
 import { base, baseSepolia } from 'wagmi/chains';
+import { useWalletPersistence } from '../hooks/useWalletPersistence';
 
 export function WalletConnect() {
   const { address, isConnected } = useAccount();
@@ -8,6 +9,8 @@ export function WalletConnect() {
   const { disconnect } = useDisconnect();
   const chainId = useChainId();
   const { switchChain } = useSwitchChain();
+  
+  useWalletPersistence();
 
   const supportedChains = [base, baseSepolia];
   const currentChain = supportedChains.find(chain => chain.id === chainId);
@@ -41,7 +44,10 @@ export function WalletConnect() {
         )}
         
         <button
-          onClick={() => disconnect()}
+          onClick={() => {
+            disconnect();
+            localStorage.removeItem('baselytics_wallet_connected');
+          }}
           className="btn-secondary text-sm"
         >
           Disconnect

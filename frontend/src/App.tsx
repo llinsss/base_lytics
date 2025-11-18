@@ -12,6 +12,7 @@ import { Status } from './pages/Status';
 import { Settings } from './pages/Settings';
 import { WalletConnect } from './components/WalletConnect';
 import { NetworkSwitcher } from './components/NetworkSwitcher';
+import { ConnectionStatus } from './components/ConnectionStatus';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { SettingsProvider } from './contexts/SettingsContext';
 import { NotificationContainer } from './components/notifications/NotificationContainer';
@@ -149,6 +150,7 @@ function App() {
                 </main>
                 <Footer />
                 <NotificationContainer />
+                <ConnectionStatus />
               </div>
             </Router>
           </NotificationProvider>
