@@ -17,6 +17,7 @@ import { NotificationProvider } from './contexts/NotificationContext';
 import { SettingsProvider } from './contexts/SettingsContext';
 import { NotificationContainer } from './components/notifications/NotificationContainer';
 import { useTheme } from './hooks/useTheme';
+import { loadDeploymentAddresses } from './utils/loadDeployments';
 
 // Wagmi configuration
 const config = createConfig({
@@ -131,6 +132,11 @@ function Footer() {
 }
 
 function App() {
+  // Load contract addresses on app start
+  React.useEffect(() => {
+    loadDeploymentAddresses();
+  }, []);
+
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
