@@ -6,6 +6,7 @@ interface ContractConfig {
   chainId: number;
   contracts: Record<string, `0x${string}`>;
   timestamp: string;
+  deployer?: string;
 }
 
 export function useContractLoader() {
@@ -26,7 +27,7 @@ export function useContractLoader() {
       // Try to load the generated config
       try {
         const { CONTRACT_CONFIG } = await import('../config/contracts');
-        
+
         // Verify chain ID matches
         if (CONTRACT_CONFIG.chainId === chainId) {
           setConfig(CONTRACT_CONFIG);
