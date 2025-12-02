@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import { useAccount } from 'wagmi';
 import { formatEther, parseEther } from 'viem';
 import { useStakingInfo, useTokenBalance, useContractWrite } from '../hooks/useContracts';
-import { CONTRACT_ADDRESSES, BASE_TOKEN_ABI, BASE_STAKING_ABI } from '../utils/contracts';
+import { useContractAddresses, BASE_TOKEN_ABI, BASE_STAKING_ABI } from '../utils/contracts';
 
 export function StakingCard() {
   const { address } = useAccount();
+  const contractAddresses = useContractAddresses();
   const stakingInfo = useStakingInfo(address);
   const tokenBalance = useTokenBalance(address);
   const { writeContract, isPending, isConfirming, isSuccess } = useContractWrite();
-  
+
   const [stakeAmount, setStakeAmount] = useState('');
   const [unstakeAmount, setUnstakeAmount] = useState('');
   const [activeTab, setActiveTab] = useState<'stake' | 'unstake'>('stake');
@@ -17,20 +18,20 @@ export function StakingCard() {
   const handleApprove = () => {
     const amount = activeTab === 'stake' ? stakeAmount : unstakeAmount;
     if (!amount) return;
-    
+
     writeContract({
-      address: CONTRACT_ADDRESSES.BaseToken,
+      address: contractAddresses.BaseToken,
       abi: BASE_TOKEN_ABI,
       functionName: 'approve',
-      args: [CONTRACT_ADDRESSES.BaseStaking, parseEther(amount)],
+      args: [contractAddresses.BaseStaking, parseEther(amount)],
     });
   };
 
   const handleStake = () => {
     if (!stakeAmount) return;
-    
+
     writeContract({
-      address: CONTRACT_ADDRESSES.BaseStaking,
+      address: contractAddresses.BaseStaking,
       abi: BASE_STAKING_ABI,
       functionName: 'stake',
       args: [parseEther(stakeAmount)],
@@ -39,9 +40,9 @@ export function StakingCard() {
 
   const handleUnstake = () => {
     if (!unstakeAmount) return;
-    
+
     writeContract({
-      address: CONTRACT_ADDRESSES.BaseStaking,
+      address: contractAddresses.BaseStaking,
       abi: BASE_STAKING_ABI,
       functionName: 'unstake',
       args: [parseEther(unstakeAmount)],
@@ -50,7 +51,7 @@ export function StakingCard() {
 
   const handleClaimRewards = () => {
     writeContract({
-      address: CONTRACT_ADDRESSES.BaseStaking,
+      address: contractAddresses.BaseStaking,
       abi: BASE_STAKING_ABI,
       functionName: 'claimReward',
     });
@@ -106,21 +107,19 @@ export function StakingCard() {
         <div className="flex mb-4">
           <button
             onClick={() => setActiveTab('stake')}
-            className={`flex-1 py-2 px-4 text-sm font-medium rounded-l-lg border ${
-              activeTab === 'stake'
+            className={`flex-1 py-2 px-4 text-sm font-medium rounded-l-lg border ${activeTab === 'stake'
                 ? 'bg-base-600 text-white border-base-600'
                 : 'bg-white text-gray-700 border-gray-300'
-            }`}
+              }`}
           >
             Stake
           </button>
           <button
             onClick={() => setActiveTab('unstake')}
-            className={`flex-1 py-2 px-4 text-sm font-medium rounded-r-lg border-t border-r border-b ${
-              activeTab === 'unstake'
+            className={`flex-1 py-2 px-4 text-sm font-medium rounded-r-lg border-t border-r border-b ${activeTab === 'unstake'
                 ? 'bg-base-600 text-white border-base-600'
                 : 'bg-white text-gray-700 border-gray-300'
-            }`}
+              }`}
           >
             Unstake
           </button>
