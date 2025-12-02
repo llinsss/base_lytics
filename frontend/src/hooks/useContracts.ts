@@ -1,5 +1,5 @@
 import { useChainId } from 'wagmi';
-import { getContractAddress, ContractAddresses } from '../config/contracts';
+import { getContractAddress, getContractABI, ContractAddresses } from '../config/contracts';
 
 export function useContracts() {
   const chainId = useChainId();
@@ -13,9 +13,16 @@ export function useContracts() {
   };
 
   return {
-    BaseToken: getAddress('BaseToken'),
-    BaseNFT: getAddress('BaseNFT'),
-    BaseStaking: getAddress('BaseStaking'),
+    addresses: {
+      BaseToken: getAddress('BaseToken'),
+      BaseNFT: getAddress('BaseNFT'),
+      BaseStaking: getAddress('BaseStaking'),
+    },
+    abis: {
+      BaseToken: getContractABI('BaseToken'),
+      BaseNFT: getContractABI('BaseNFT'),
+      BaseStaking: getContractABI('BaseStaking'),
+    },
     chainId,
   };
 }

@@ -62,6 +62,21 @@ export const BASE_STAKING_ABI = [
   'event Unstaked(address indexed user, uint256 amount)',
 ] as const;
 
+export const BASE_DEX_ABI = [
+  'function createPool(address tokenA, address tokenB, uint256 feeRate)',
+  'function addLiquidity(address tokenA, address tokenB, uint256 amountA, uint256 amountB, uint256 minLiquidityA, uint256 minLiquidityB)',
+  'function removeLiquidity(address tokenA, address tokenB, uint256 liquidity, uint256 minAmountA, uint256 minAmountB)',
+  'function swap(address tokenIn, address tokenOut, uint256 amountIn, uint256 minAmountOut)',
+  'function getAmountOut(address tokenIn, address tokenOut, uint256 amountIn) view returns (uint256)',
+  'function getPoolInfo(address tokenA, address tokenB) view returns (uint256 reserveA, uint256 reserveB, uint256 totalSupply, uint256 feeRate)',
+  'function getLiquidityPosition(address user, address tokenA, address tokenB) view returns (uint256 amount, uint256 timestamp)',
+  'function getQuote(address tokenIn, address tokenOut, uint256 amountIn) view returns (uint256 amountOut, uint256 priceImpact)',
+  'event LiquidityAdded(address indexed provider, address indexed tokenA, address indexed tokenB, uint256 amountA, uint256 amountB, uint256 liquidity)',
+  'event LiquidityRemoved(address indexed provider, address indexed tokenA, address indexed tokenB, uint256 amountA, uint256 amountB, uint256 liquidity)',
+  'event SwapExecuted(address indexed user, address indexed tokenIn, address indexed tokenOut, uint256 amountIn, uint256 amountOut)',
+  'event PoolCreated(address indexed tokenA, address indexed tokenB, address indexed pool)',
+] as const;
+
 export const CHAIN_CONFIG = {
   baseSepolia: {
     id: 84532,

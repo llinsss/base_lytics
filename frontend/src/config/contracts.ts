@@ -1,4 +1,5 @@
 import { base, baseSepolia } from 'wagmi/chains';
+import { BaseTokenABI, BaseNFTABI, BaseStakingABI } from './abis';
 
 export interface ContractAddresses {
   BaseToken: `0x${string}`;
@@ -25,4 +26,14 @@ export function getContractAddress(chainId: number, contractName: keyof Contract
     throw new Error(`No contract addresses configured for chain ${chainId}`);
   }
   return addresses[contractName];
+}
+
+export const ABIS = {
+  BaseToken: BaseTokenABI,
+  BaseNFT: BaseNFTABI,
+  BaseStaking: BaseStakingABI,
+} as const;
+
+export function getContractABI(contractName: keyof ContractAddresses) {
+  return ABIS[contractName];
 }
