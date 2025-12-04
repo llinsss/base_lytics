@@ -1,111 +1,59 @@
 import React, { useState } from 'react';
-import { useAccount } from 'wagmi';
+import { useTokenBalance, useTokenTransfer } from '../hooks';
 import { formatEther, parseEther } from 'viem';
-import { useTokenInfo, useTokenBalance, useContractWrite } from '../hooks/useContracts';
-import { useContractAddresses } from '../utils/contracts';
-import { BASE_TOKEN_ABI } from '../utils/contracts';
-import { useTransactionNotifications } from '../hooks/useTransactionNotifications';
+import { useAccount } from 'wagmi';
 
 export function TokenCard() {
   const { address } = useAccount();
-  const contractAddresses = useContractAddresses();
-  const tokenInfo = useTokenInfo();
-  const balance = useTokenBalance(address);
-  const { writeContract, isPending, isConfirming, isSuccess, hash, error } = useContractWrite();
-  
-  const [transferTo, setTransferTo] = useState('');
-  const [transferAmount, setTransferAmount] = useState('');
-
-  useTransactionNotifications(
-    { hash, isPending, isConfirming, isSuccess, error },
-    {
-      pendingTitle: 'Token Transfer Submitted',
-      successTitle: 'Tokens Transferred Successfully',
-      errorTitle: 'Token Transfer Failed',
-      onSuccess: () => {
-        setTransferTo('');
-        setTransferAmount('');
-      }
-    }
-  );
+  const { balance, isLoading } = useTokenBalance();
+  const { transfer, isPending } = useTokenTransfer();
+  const [recipient, setRecipient] = useState('');
+  const [amount, setAmount] = useState('');
 
   const handleTransfer = () => {
-    if (!transferTo || !transferAmount) return;
-    
-    writeContract({
-      address: contractAddresses.BaseToken,
-      abi: BASE_TOKEN_ABI,
-      functionName: 'transfer',
-      args: [transferTo as `0x${string}`, parseEther(transferAmount)],
-    });
+    if (recipient && amount) {
+      transfer(recipient, parseEther(amount));
+      setRecipient('');
+      setAmount('');
+    }
   };
-
-  const supplyUtilization = tokenInfo.maxSupply > 0n 
-    ? Number((tokenInfo.totalSupply * 100n) / tokenInfo.maxSupply)
-    : 0;
 
   return (
     <div className="card">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold">BaseToken</h2>
-        <span className="text-sm text-gray-500">{tokenInfo.symbol}</span>
+      <h3 className="text-lg font-semibold mb-4 dark:text-white">Base Token</h3>
+      
+      <div className="mb-4">
+        <p className="text-sm text-gray-600 dark:text-gray-400">Balance</p>
+        <p className="text-2xl font-bold dark:text-white">
+          {isLoading ? '...' : formatEther(balance)} BLT
+        </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 mb-6">
-        <div>
-          <p className="text-sm text-gray-600">Your Balance</p>
-          <p className="text-2xl font-bold text-base-600">
-            {balance ? formatEther(balance) : '0'} {tokenInfo.symbol}
-          </p>
-        </div>
-        <div>
-          <p className="text-sm text-gray-600">Total Supply</p>
-          <p className="text-lg font-semibold">
-            {tokenInfo.totalSupply ? formatEther(tokenInfo.totalSupply) : '0'}
-          </p>
-        </div>
-      </div>
-
-      <div className="mb-6">
-        <div className="flex justify-between text-sm mb-2">
-          <span>Supply Utilization</span>
-          <span>{supplyUtilization.toFixed(1)}%</span>
-        </div>
-        <div className="w-full bg-gray-200 rounded-full h-2">
-          <div 
-            className="bg-base-600 h-2 rounded-full transition-all"
-            style={{ width: `${supplyUtilization}%` }}
-          />
-        </div>
-      </div>
-
-      <div className="border-t pt-6">
-        <h3 className="font-semibold mb-4">Transfer Tokens</h3>
-        <div className="space-y-4">
+      {address && (
+        <div className="space-y-3">
           <input
             type="text"
-            placeholder="Recipient address (0x...)"
-            value={transferTo}
-            onChange={(e) => setTransferTo(e.target.value)}
-            className="input-field"
+            placeholder="Recipient address"
+            value={recipient}
+            onChange={(e) => setRecipient(e.target.value)}
+            className="w-full px-3 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:text-white"
           />
           <input
             type="number"
             placeholder="Amount"
-            value={transferAmount}
-            onChange={(e) => setTransferAmount(e.target.value)}
-            className="input-field"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            className="w-full px-3 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:text-white"
           />
           <button
             onClick={handleTransfer}
-            disabled={isPending || isConfirming || !transferTo || !transferAmount}
+            disabled={isPending || !recipient || !amount}
             className="btn-primary w-full"
           >
-            {isPending || isConfirming ? 'Processing...' : 'Transfer'}
+            {isPending ? 'Transferring...' : 'Transfer'}
           </button>
-
         </div>
-      </div>
+      )}
     </div>
   );
 }
