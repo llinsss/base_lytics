@@ -4,9 +4,11 @@ import { ConnectWalletPrompt } from '../components/WalletConnect';
 import { TokenCard } from '../components/TokenCard';
 import { NFTCard } from '../components/NFTCard';
 import { StakingCard } from '../components/StakingCard';
+import { useContractEvents } from '../hooks/useContractEvents';
 
 export function Dashboard() {
   const { isConnected } = useAccount();
+  useContractEvents(); // Enable real-time event monitoring
 
   if (!isConnected) {
     return (
