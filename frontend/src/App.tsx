@@ -15,6 +15,7 @@ import { Pool } from './pages/Pool';
 import { WalletConnect } from './components/WalletConnect';
 import { NetworkSwitcher } from './components/NetworkSwitcher';
 import { ConnectionStatus } from './components/ConnectionStatus';
+import { TransactionStatus } from './components/TransactionStatus';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { SettingsProvider } from './contexts/SettingsContext';
 import { NotificationContainer } from './components/notifications/NotificationContainer';
@@ -174,6 +175,7 @@ function App() {
                 <Footer />
                 <NotificationContainer />
                 <ConnectionStatus />
+                <TransactionStatus />
               </div>
             </Router>
           </NotificationProvider>
