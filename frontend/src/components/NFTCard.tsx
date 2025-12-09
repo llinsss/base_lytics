@@ -16,11 +16,11 @@ export function NFTCard() {
   return (
     <div className="card">
       <h3 className="text-lg font-semibold mb-4 dark:text-white">Base NFT</h3>
-      
+
       <div className="mb-4">
         <p className="text-sm text-gray-600 dark:text-gray-400">Owned NFTs</p>
         <p className="text-2xl font-bold dark:text-white">
-          {isLoading ? '...' : balance.toString()}
+          {isLoading ? '...' : (balance as bigint).toString()}
         </p>
       </div>
 
