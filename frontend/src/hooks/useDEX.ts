@@ -78,7 +78,7 @@ export function useDEX() {
         createPool,
         isPending,
         isConfirming,
-        isConfirmed,
+        isSuccess: isConfirmed,
         hash,
         writeError,
     };
