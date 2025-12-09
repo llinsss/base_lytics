@@ -6,7 +6,7 @@ export function useStaking() {
   const { address } = useAccount();
   const { addresses, abis } = useContracts();
   const { addNotification } = useNotifications();
-  
+
   const { writeContract, data: hash, isPending } = useWriteContract();
   const { isLoading: isConfirming } = useWaitForTransactionReceipt({ hash });
 
@@ -20,7 +20,7 @@ export function useStaking() {
 
   const stake = async (amount: bigint) => {
     try {
-      addNotification('Staking tokens...', 'info');
+      addNotification({ title: 'Staking tokens...', type: 'info' });
       await writeContract({
         address: addresses.BaseStaking,
         abi: abis.BaseStaking,
@@ -28,13 +28,13 @@ export function useStaking() {
         args: [amount]
       });
     } catch (error) {
-      addNotification('Staking failed', 'error');
+      addNotification({ title: 'Staking failed', type: 'error' });
     }
   };
 
   const unstake = async (amount: bigint) => {
     try {
-      addNotification('Unstaking tokens...', 'info');
+      addNotification({ title: 'Unstaking tokens...', type: 'info' });
       await writeContract({
         address: addresses.BaseStaking,
         abi: abis.BaseStaking,
@@ -42,12 +42,12 @@ export function useStaking() {
         args: [amount]
       });
     } catch (error) {
-      addNotification('Unstaking failed', 'error');
+      addNotification({ title: 'Unstaking failed', type: 'error' });
     }
   };
 
   return {
-    stakedBalance: stakedBalance || 0n,
+    stakedBalance: stakedBalance || BigInt(0),
     stake,
     unstake,
     isPending,
