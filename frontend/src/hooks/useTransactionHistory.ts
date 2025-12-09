@@ -7,7 +7,7 @@ export function useTransactionHistory() {
   const { address } = useAccount();
   const publicClient = usePublicClient();
   const contractAddresses = useContractAddresses();
-  
+
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -20,17 +20,17 @@ export function useTransactionHistory() {
 
   const loadTransactionHistory = async () => {
     if (!address || !publicClient) return;
-    
+
     try {
       setLoading(true);
       setError(null);
-      
+
       // Get recent blocks to scan for transactions
       const latestBlock = await publicClient.getBlockNumber();
-      const fromBlock = latestBlock - 1000n; // Last ~1000 blocks
-      
+      const fromBlock = latestBlock - BigInt(1000); // Last ~1000 blocks
+
       const txHistory: Transaction[] = [];
-      
+
       // Scan for token transfers
       try {
         const tokenLogs = await publicClient.getLogs({
@@ -47,7 +47,7 @@ export function useTransactionHistory() {
           fromBlock,
           toBlock: 'latest'
         });
-        
+
         for (const log of tokenLogs) {
           if (log.args?.from === address || log.args?.to === address) {
             txHistory.push({
@@ -67,7 +67,7 @@ export function useTransactionHistory() {
       } catch (err) {
         console.warn('Failed to load token transfers:', err);
       }
-      
+
       // Scan for NFT transfers
       try {
         const nftLogs = await publicClient.getLogs({
@@ -84,7 +84,7 @@ export function useTransactionHistory() {
           fromBlock,
           toBlock: 'latest'
         });
-        
+
         for (const log of nftLogs) {
           if (log.args?.from === address || log.args?.to === address) {
             txHistory.push({
@@ -103,12 +103,12 @@ export function useTransactionHistory() {
       } catch (err) {
         console.warn('Failed to load NFT transfers:', err);
       }
-      
+
       // Sort by block number (most recent first)
       txHistory.sort((a, b) => (b.blockNumber || 0) - (a.blockNumber || 0));
-      
+
       setTransactions(txHistory);
-      
+
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load transaction history');
     } finally {
@@ -122,37 +122,37 @@ export function useTransactionHistory() {
       status: 'pending',
       timestamp: Date.now()
     };
-    
+
     setTransactions(prev => [pendingTx, ...prev]);
-    
+
     // Monitor transaction status
     monitorTransaction(tx.hash);
   };
 
   const monitorTransaction = async (hash: string) => {
     if (!publicClient) return;
-    
+
     try {
       // Wait for transaction receipt
       const receipt = await publicClient.waitForTransactionReceipt({ hash: hash as `0x${string}` });
-      
+
       // Update transaction status
-      setTransactions(prev => 
-        prev.map(tx => 
-          tx.hash === hash 
-            ? { 
-                ...tx, 
-                status: receipt.status === 'success' ? 'confirmed' : 'failed',
-                blockNumber: Number(receipt.blockNumber),
-                gasUsed: receipt.gasUsed.toString()
-              }
+      setTransactions(prev =>
+        prev.map(tx =>
+          tx.hash === hash
+            ? {
+              ...tx,
+              status: receipt.status === 'success' ? 'confirmed' : 'failed',
+              blockNumber: Number(receipt.blockNumber),
+              gasUsed: receipt.gasUsed.toString()
+            }
             : tx
         )
       );
     } catch (err) {
       // Mark as failed
-      setTransactions(prev => 
-        prev.map(tx => 
+      setTransactions(prev =>
+        prev.map(tx =>
           tx.hash === hash ? { ...tx, status: 'failed' } : tx
         )
       );
