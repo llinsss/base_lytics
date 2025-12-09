@@ -12,6 +12,7 @@ import { Status } from './pages/Status';
 import { Settings } from './pages/Settings';
 import { Swap } from './pages/Swap';
 import { Pool } from './pages/Pool';
+import { Analyzer } from './pages/Analyzer';
 import { WalletConnect } from './components/WalletConnect';
 import { NetworkSwitcher } from './components/NetworkSwitcher';
 import { ConnectionStatus } from './components/ConnectionStatus';
@@ -58,8 +59,8 @@ function Header() {
               <Link
                 to="/"
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === '/'
-                    ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
-                    : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
+                  ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
+                  : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
                   }`}
               >
                 Dashboard
@@ -67,8 +68,8 @@ function Header() {
               <Link
                 to="/analytics"
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === '/analytics'
-                    ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
-                    : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
+                  ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
+                  : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
                   }`}
               >
                 Analytics
@@ -76,8 +77,8 @@ function Header() {
               <Link
                 to="/activity"
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === '/activity'
-                    ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
-                    : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
+                  ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
+                  : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
                   }`}
               >
                 Activity
@@ -85,8 +86,8 @@ function Header() {
               <Link
                 to="/status"
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === '/status'
-                    ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
-                    : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
+                  ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
+                  : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
                   }`}
               >
                 Status
@@ -94,8 +95,8 @@ function Header() {
               <Link
                 to="/settings"
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === '/settings'
-                    ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
-                    : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
+                  ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
+                  : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
                   }`}
               >
                 Settings
@@ -103,8 +104,8 @@ function Header() {
               <Link
                 to="/swap"
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === '/swap'
-                    ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
-                    : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
+                  ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
+                  : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
                   }`}
               >
                 Swap
@@ -112,11 +113,20 @@ function Header() {
               <Link
                 to="/pool"
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === '/pool'
-                    ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
-                    : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
+                  ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
+                  : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
                   }`}
               >
                 Pool
+              </Link>
+              <Link
+                to="/analyzer"
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === '/analyzer'
+                  ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
+                  : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
+                  }`}
+              >
+                Analyzer
               </Link>
             </nav>
           </div>
@@ -170,6 +180,7 @@ function App() {
                     <Route path="/settings" element={<Settings />} />
                     <Route path="/swap" element={<Swap />} />
                     <Route path="/pool" element={<Pool />} />
+                    <Route path="/analyzer" element={<Analyzer />} />
                   </Routes>
                 </main>
                 <Footer />
