@@ -21,12 +21,12 @@ export function useTransactionManager() {
       timestamp: Date.now()
     };
     setTransactions(prev => [tx, ...prev]);
-    addNotification(`${type} transaction submitted`, 'info');
+    addNotification({ title: `${type} transaction submitted`, type: 'info' });
   };
 
   const updateTransactionStatus = (hash: `0x${string}`, status: Transaction['status']) => {
-    setTransactions(prev => 
-      prev.map(tx => 
+    setTransactions(prev =>
+      prev.map(tx =>
         tx.hash === hash ? { ...tx, status } : tx
       )
     );
