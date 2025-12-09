@@ -26,11 +26,11 @@ export function StakingCard() {
   return (
     <div className="card">
       <h3 className="text-lg font-semibold mb-4 dark:text-white">Staking</h3>
-      
+
       <div className="mb-4">
         <p className="text-sm text-gray-600 dark:text-gray-400">Staked Balance</p>
         <p className="text-2xl font-bold dark:text-white">
-          {formatEther(stakedBalance)} BLT
+          {formatEther(stakedBalance as bigint)} BLT
         </p>
       </div>
 
