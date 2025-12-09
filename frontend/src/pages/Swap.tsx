@@ -19,9 +19,9 @@ export function Swap() {
     useEffect(() => {
         if (quoteData) {
             // quoteData is [amountOut, priceImpact]
-            const amountOut = quoteData[0];
+            const amountOut = (quoteData as [bigint, bigint])[0];
             // Set min amount out with 0.5% slippage tolerance
-            const minOut = (amountOut * 995n) / 1000n;
+            const minOut = (amountOut * BigInt(995)) / BigInt(1000);
             setMinAmountOut(formatEther(minOut));
         } else {
             setMinAmountOut('');
@@ -90,19 +90,19 @@ export function Swap() {
                         />
                     </div>
 
-                    {quoteData && (
+                    {!!quoteData && (
                         <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg space-y-2">
                             <div className="flex justify-between text-sm">
                                 <span className="text-gray-600 dark:text-gray-400">Estimated Output:</span>
                                 <span className="font-medium text-gray-900 dark:text-white">
-                                    {formatEther(quoteData[0])}
+                                    {formatEther((quoteData as [bigint, bigint])[0])}
                                 </span>
                             </div>
                             <div className="flex justify-between text-sm">
                                 <span className="text-gray-600 dark:text-gray-400">Price Impact:</span>
-                                <span className={`font-medium ${Number(quoteData[1]) > 500 ? 'text-red-500' : 'text-green-500'
+                                <span className={`font-medium ${Number((quoteData as [bigint, bigint])[1]) > 500 ? 'text-red-500' : 'text-green-500'
                                     }`}>
-                                    {(Number(quoteData[1]) / 100).toFixed(2)}%
+                                    {(Number((quoteData as [bigint, bigint])[1]) / 100).toFixed(2)}%
                                 </span>
                             </div>
                             <div className="flex justify-between text-sm">
