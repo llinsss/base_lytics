@@ -15,8 +15,8 @@ export function SystemHealth() {
   const { address } = useAccount();
   const tokenInfo = useTokenInfo();
   const nftInfo = useNFTInfo();
-  const stakingInfo = useStakingInfo(address);
-  
+  const stakingInfo = useStakingInfo();
+
   const [healthMetrics, setHealthMetrics] = useState<HealthMetric[]>([]);
   const [overallHealth, setOverallHealth] = useState<'healthy' | 'warning' | 'error'>('healthy');
 
@@ -44,7 +44,7 @@ export function SystemHealth() {
 
     // Token supply health
     if (tokenInfo.totalSupply && tokenInfo.maxSupply) {
-      const utilization = Number((tokenInfo.totalSupply * 100n) / tokenInfo.maxSupply);
+      const utilization = Number((tokenInfo.totalSupply * BigInt(100)) / tokenInfo.maxSupply);
       if (utilization > 90) {
         metrics.push({
           name: 'Token Supply',
@@ -63,13 +63,8 @@ export function SystemHealth() {
     }
 
     // NFT minting health
-    if (nftInfo.paused) {
-      metrics.push({
-        name: 'NFT Minting',
-        status: 'warning',
-        message: 'NFT contract is paused'
-      });
-    } else if (!nftInfo.mintingEnabled) {
+    // NFT minting health
+    if (!nftInfo.mintingEnabled) {
       metrics.push({
         name: 'NFT Minting',
         status: 'warning',
@@ -84,19 +79,19 @@ export function SystemHealth() {
     }
 
     // Staking health
-    if (stakingInfo.rewardRate < 50) {
+    if ((stakingInfo.rewardRate || BigInt(0)) < BigInt(50)) {
       metrics.push({
         name: 'Staking Rewards',
         status: 'warning',
         message: 'Low staking reward rate',
-        value: `${stakingInfo.apy.toFixed(2)}% APY`
+        value: `${(Number(stakingInfo.rewardRate || BigInt(0)) / 100).toFixed(2)}% Rate`
       });
     } else {
       metrics.push({
         name: 'Staking Rewards',
         status: 'healthy',
         message: 'Staking rewards active',
-        value: `${stakingInfo.apy.toFixed(2)}% APY`
+        value: `${(Number(stakingInfo.rewardRate || BigInt(0)) / 100).toFixed(2)}% Rate`
       });
     }
 
