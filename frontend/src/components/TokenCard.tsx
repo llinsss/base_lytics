@@ -21,11 +21,11 @@ export function TokenCard() {
   return (
     <div className="card">
       <h3 className="text-lg font-semibold mb-4 dark:text-white">Base Token</h3>
-      
+
       <div className="mb-4">
         <p className="text-sm text-gray-600 dark:text-gray-400">Balance</p>
         <p className="text-2xl font-bold dark:text-white">
-          {isLoading ? '...' : formatEther(balance)} BLT
+          {isLoading ? '...' : formatEther(balance as bigint)} BLT
         </p>
       </div>
 
