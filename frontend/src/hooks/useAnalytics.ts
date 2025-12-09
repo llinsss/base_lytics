@@ -31,8 +31,8 @@ export function useAnalytics() {
   const { address } = useAccount();
   const tokenInfo = useTokenInfo();
   const nftInfo = useNFTInfo();
-  const stakingInfo = useStakingInfo(address);
-  
+  const stakingInfo = useStakingInfo();
+
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -51,20 +51,20 @@ export function useAnalytics() {
         tokenSupply: {
           current: tokenInfo.totalSupply ? Number(formatEther(tokenInfo.totalSupply)) : 0,
           max: tokenInfo.maxSupply ? Number(formatEther(tokenInfo.maxSupply)) : 0,
-          utilization: tokenInfo.maxSupply > 0n 
-            ? Number((tokenInfo.totalSupply * 100n) / tokenInfo.maxSupply) 
+          utilization: tokenInfo.maxSupply > BigInt(0)
+            ? Number((tokenInfo.totalSupply * BigInt(100)) / tokenInfo.maxSupply)
             : 0
         },
         nftMetrics: {
-          totalMinted: nftInfo.totalSupply || 0,
-          revenue: nftInfo.price && nftInfo.totalSupply 
-            ? Number(formatEther(nftInfo.price)) * nftInfo.totalSupply 
+          totalMinted: Number(nftInfo.totalSupply || 0),
+          revenue: nftInfo.price && nftInfo.totalSupply
+            ? Number(formatEther(nftInfo.price)) * Number(nftInfo.totalSupply)
             : 0,
           mintPrice: nftInfo.price ? Number(formatEther(nftInfo.price)) : 0
         },
         stakingMetrics: {
           totalStaked: stakingInfo.totalStaked ? Number(formatEther(stakingInfo.totalStaked)) : 0,
-          apy: stakingInfo.apy || 0,
+          apy: Number(stakingInfo.rewardRate) || 0,
           participants: 1 // Simplified - would need to track actual participants
         },
         timeSeriesData
@@ -81,16 +81,16 @@ export function useAnalytics() {
   const generateMockTimeSeriesData = () => {
     const data = [];
     const now = new Date();
-    
+
     for (let i = 29; i >= 0; i--) {
       const date = new Date(now);
       date.setDate(date.getDate() - i);
-      
+
       // Generate realistic mock data with growth trends
       const baseTokenSupply = 800000 + (29 - i) * 5000 + Math.random() * 10000;
       const baseNFTMinted = Math.floor((29 - i) * 2.5 + Math.random() * 5);
       const baseStakingTVL = 50000 + (29 - i) * 2000 + Math.random() * 5000;
-      
+
       data.push({
         date: date.toISOString().split('T')[0],
         tokenSupply: Math.floor(baseTokenSupply),
@@ -98,7 +98,7 @@ export function useAnalytics() {
         stakingTVL: Math.floor(baseStakingTVL)
       });
     }
-    
+
     return data;
   };
 
