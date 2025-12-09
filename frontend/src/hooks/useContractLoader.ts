@@ -26,13 +26,18 @@ export function useContractLoader() {
 
       // Try to load the generated config
       try {
-        const { CONTRACT_CONFIG } = await import('../config/contracts');
+        const { CONTRACT_ADDRESSES } = await import('../config/contracts');
 
-        // Verify chain ID matches
-        if (CONTRACT_CONFIG.chainId === chainId) {
-          setConfig(CONTRACT_CONFIG);
+        if (chainId && CONTRACT_ADDRESSES[chainId]) {
+          setConfig({
+            network: 'configured',
+            chainId,
+            contracts: CONTRACT_ADDRESSES[chainId] as unknown as Record<string, `0x${string}`>,
+            timestamp: new Date().toISOString(),
+          });
         } else {
-          setError(`Network mismatch. Expected chain ${CONTRACT_CONFIG.chainId}, got ${chainId}`);
+          // Fallback to defaults handled in catch or distinct block
+          throw new Error("No config for chain");
         }
       } catch (importError) {
         // Fallback to default addresses if config doesn't exist
