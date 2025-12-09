@@ -6,13 +6,13 @@ import { parseEther } from 'viem';
 export function useNFTMint() {
   const { addresses, abis } = useContracts();
   const { addNotification } = useNotifications();
-  
+
   const { writeContract, data: hash, isPending } = useWriteContract();
   const { isLoading: isConfirming } = useWaitForTransactionReceipt({ hash });
 
   const mint = async (to: string) => {
     try {
-      addNotification('Minting NFT...', 'info');
+      addNotification({ title: 'Minting NFT...', type: 'info' });
       await writeContract({
         address: addresses.BaseNFT,
         abi: abis.BaseNFT,
@@ -21,7 +21,7 @@ export function useNFTMint() {
         value: parseEther('0.01') // 0.01 ETH mint price
       });
     } catch (error) {
-      addNotification('Mint failed', 'error');
+      addNotification({ title: 'Mint failed', type: 'error' });
     }
   };
 
