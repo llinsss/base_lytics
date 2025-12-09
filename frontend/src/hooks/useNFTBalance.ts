@@ -14,7 +14,7 @@ export function useNFTBalance() {
   });
 
   return {
-    balance: balance || 0n,
+    balance: balance || BigInt(0),
     isLoading,
     refetch
   };
