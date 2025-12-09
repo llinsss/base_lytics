@@ -23,10 +23,10 @@ export function NetworkStatus() {
   const updateNetworkInfo = async () => {
     try {
       setLoading(true);
-      
+
       // Get gas price (simplified for demo)
-      const gasPrice = 1000000000n; // 1 gwei placeholder
-      
+      const gasPrice = BigInt(1000000000); // 1 gwei placeholder
+
       const info: NetworkInfo = {
         chainId: chainId || 0,
         name: getNetworkName(chainId || 0),
@@ -34,7 +34,7 @@ export function NetworkStatus() {
         gasPrice,
         isConnected: !!chainId,
       };
-      
+
       setNetworkInfo(info);
     } catch (error) {
       console.error('Failed to fetch network info:', error);
@@ -108,21 +108,21 @@ export function NetworkStatus() {
             <span className="text-gray-600">Network</span>
             <span className="font-medium">{networkInfo.name}</span>
           </div>
-          
+
           <div className="flex justify-between">
             <span className="text-gray-600">Chain ID</span>
             <span className="font-mono">{networkInfo.chainId}</span>
           </div>
-          
+
           <div className="flex justify-between">
             <span className="text-gray-600">Block Number</span>
             <span className="font-mono">{networkInfo.blockNumber.toLocaleString()}</span>
           </div>
-          
+
           <div className="flex justify-between">
             <span className="text-gray-600">Gas Price</span>
             <span className="font-mono">
-              {parseFloat(formatEther(networkInfo.gasPrice * 1000000000n)).toFixed(2)} gwei
+              {parseFloat(formatEther(networkInfo.gasPrice * BigInt(1000000000))).toFixed(2)} gwei
             </span>
           </div>
         </div>
