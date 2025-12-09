@@ -13,7 +13,7 @@ export function useContractEvents() {
     eventName: 'Transfer',
     onLogs: (logs) => {
       logs.forEach(log => {
-        addNotification(`Token transfer detected`, 'success');
+        addNotification({ title: `Token transfer detected`, type: 'success' });
       });
     }
   });
@@ -25,8 +25,8 @@ export function useContractEvents() {
     eventName: 'Transfer',
     onLogs: (logs) => {
       logs.forEach(log => {
-        if (log.args.from === '0x0000000000000000000000000000000000000000') {
-          addNotification(`NFT minted!`, 'success');
+        if ((log as any).args.from === '0x0000000000000000000000000000000000000000') {
+          addNotification({ title: `NFT minted!`, type: 'success' });
         }
       });
     }
@@ -39,7 +39,7 @@ export function useContractEvents() {
     eventName: 'Staked',
     onLogs: (logs) => {
       logs.forEach(log => {
-        addNotification(`Tokens staked`, 'success');
+        addNotification({ title: `Tokens staked`, type: 'success' });
       });
     }
   });
