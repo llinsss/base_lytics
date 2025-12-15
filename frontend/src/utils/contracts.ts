@@ -4,7 +4,7 @@ import { useContractLoader } from '../hooks/useContractLoader';
 // Dynamic contract addresses loaded from deployment
 export function useContractAddresses(): ContractAddresses {
   const { getContractAddress } = useContractLoader();
-  
+
   return {
     BaseToken: getContractAddress('BaseToken'),
     BaseNFT: getContractAddress('BaseNFT'),
@@ -75,6 +75,23 @@ export const BASE_DEX_ABI = [
   'event LiquidityRemoved(address indexed provider, address indexed tokenA, address indexed tokenB, uint256 amountA, uint256 amountB, uint256 liquidity)',
   'event SwapExecuted(address indexed user, address indexed tokenIn, address indexed tokenOut, uint256 amountIn, uint256 amountOut)',
   'event PoolCreated(address indexed tokenA, address indexed tokenB, address indexed pool)',
+] as const;
+
+export const BASE_MARKETPLACE_ABI = [
+  'function listItem(address nftContract, uint256 tokenId, uint256 price, address paymentToken)',
+  'function buyItem(address nftContract, uint256 tokenId) payable',
+  'function delistItem(address nftContract, uint256 tokenId)',
+  'function createAuction(address nftContract, uint256 tokenId, uint256 startingPrice, uint256 duration, address paymentToken)',
+  'function placeBid(address nftContract, uint256 tokenId) payable',
+  'function endAuction(address nftContract, uint256 tokenId)',
+  'function getListing(address nftContract, uint256 tokenId) view returns ((address seller, address nftContract, uint256 tokenId, uint256 price, address paymentToken, bool active, uint256 timestamp) listing)',
+  'function getAuction(address nftContract, uint256 tokenId) view returns ((address seller, address nftContract, uint256 tokenId, uint256 startingPrice, uint256 highestBid, address highestBidder, uint256 endTime, bool ended, address paymentToken) auction)',
+  'event ItemListed(address indexed seller, address indexed nftContract, uint256 indexed tokenId, uint256 price, address paymentToken)',
+  'event ItemSold(address indexed seller, address indexed buyer, address indexed nftContract, uint256 tokenId, uint256 price, address paymentToken)',
+  'event ItemDelisted(address indexed seller, address indexed nftContract, uint256 indexed tokenId)',
+  'event AuctionCreated(address indexed seller, address indexed nftContract, uint256 indexed tokenId, uint256 startingPrice, uint256 endTime)',
+  'event BidPlaced(address indexed bidder, address indexed nftContract, uint256 indexed tokenId, uint256 bidAmount)',
+  'event AuctionEnded(address indexed winner, address indexed seller, address indexed nftContract, uint256 tokenId, uint256 winningBid)',
 ] as const;
 
 export const CHAIN_CONFIG = {

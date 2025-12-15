@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNFTMarketplace } from '../hooks/useNFTMarketplace';
 
 export function NFTMarketplace() {
-  const { listings, buyNFT, listNFT, isPending } = useNFTMarketplace();
+  const { listings, buyNFT, listNFT, approveNFT, isPending } = useNFTMarketplace();
   const [showListForm, setShowListForm] = useState(false);
   const [tokenId, setTokenId] = useState('');
   const [price, setPrice] = useState('');
@@ -13,6 +13,12 @@ export function NFTMarketplace() {
       setTokenId('');
       setPrice('');
       setShowListForm(false);
+    }
+  };
+
+  const handleApprove = () => {
+    if (tokenId) {
+      approveNFT(Number(tokenId));
     }
   };
 
@@ -48,6 +54,14 @@ export function NFTMarketplace() {
               className="w-full px-3 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:text-white"
             />
             <div className="flex gap-2">
+              <button
+                onClick={handleApprove}
+                disabled={isPending || !tokenId}
+                className="btn-secondary"
+                title="Approve marketplace to sell this NFT"
+              >
+                Approve
+              </button>
               <button
                 onClick={handleListNFT}
                 disabled={isPending || !tokenId || !price}

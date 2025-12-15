@@ -23,12 +23,12 @@ export function useAIAnalytics() {
   useEffect(() => {
     // Mock AI analysis
     const calculateRisk = () => {
-      const totalValue = Number(balance + stakedBalance);
+      const totalValue = Number(balance) + Number(stakedBalance);
       const stakingRatio = Number(stakedBalance) / totalValue;
-      
+
       let score = 50;
       const factors = [];
-      
+
       if (stakingRatio > 0.8) {
         score += 20;
         factors.push('High staking concentration');
@@ -43,7 +43,7 @@ export function useAIAnalytics() {
       }
 
       const level = score > 70 ? 'High' : score > 40 ? 'Medium' : 'Low';
-      
+
       setRiskScore({ score, level, factors });
     };
 
@@ -57,8 +57,8 @@ export function useAIAnalytics() {
 
     const generateRecommendations = () => {
       const recs = [];
-      const stakingRatio = Number(stakedBalance) / Number(balance + stakedBalance);
-      
+      const stakingRatio = Number(stakedBalance) / (Number(balance) + Number(stakedBalance));
+
       if (stakingRatio < 0.3) {
         recs.push('Consider staking more tokens for higher yields');
       }
@@ -66,7 +66,7 @@ export function useAIAnalytics() {
         recs.push('Diversify into NFTs for portfolio balance');
       }
       recs.push('Monitor gas fees for optimal transaction timing');
-      
+
       setRecommendations(recs);
     };
 

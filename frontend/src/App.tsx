@@ -10,13 +10,15 @@ import { Analytics } from './pages/Analytics';
 import { Activity } from './pages/Activity';
 import { Status } from './pages/Status';
 import { Settings } from './pages/Settings';
-import { Swap } from './pages/Swap';
-import { Pool } from './pages/Pool';
-import { Analyzer } from './pages/Analyzer';
+import { DeFi } from './pages/DeFi';
+import { Governance } from './pages/Governance';
+import { Marketplace } from './pages/Marketplace';
+import { Advanced } from './pages/Advanced';
 import { WalletConnect } from './components/WalletConnect';
 import { NetworkSwitcher } from './components/NetworkSwitcher';
 import { ConnectionStatus } from './components/ConnectionStatus';
 import { TransactionStatus } from './components/TransactionStatus';
+import { VoiceControl } from './components/VoiceControl';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { SettingsProvider } from './contexts/SettingsContext';
 import { NotificationContainer } from './components/notifications/NotificationContainer';
@@ -93,6 +95,42 @@ function Header() {
                 Status
               </Link>
               <Link
+                to="/defi"
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === '/defi'
+                  ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
+                  : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
+                  }`}
+              >
+                DeFi
+              </Link>
+              <Link
+                to="/governance"
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === '/governance'
+                  ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
+                  : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
+                  }`}
+              >
+                Governance
+              </Link>
+              <Link
+                to="/marketplace"
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === '/marketplace'
+                  ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
+                  : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
+                  }`}
+              >
+                Marketplace
+              </Link>
+              <Link
+                to="/advanced"
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === '/advanced'
+                  ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
+                  : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
+                  }`}
+              >
+                Advanced
+              </Link>
+              <Link
                 to="/settings"
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === '/settings'
                   ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
@@ -100,33 +138,6 @@ function Header() {
                   }`}
               >
                 Settings
-              </Link>
-              <Link
-                to="/swap"
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === '/swap'
-                  ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
-                  : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
-                  }`}
-              >
-                Swap
-              </Link>
-              <Link
-                to="/pool"
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === '/pool'
-                  ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
-                  : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
-                  }`}
-              >
-                Pool
-              </Link>
-              <Link
-                to="/analyzer"
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === '/analyzer'
-                  ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
-                  : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
-                  }`}
-              >
-                Analyzer
               </Link>
             </nav>
           </div>
@@ -175,18 +186,20 @@ function App() {
                   <Routes>
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/analytics" element={<Analytics />} />
+                    <Route path="/defi" element={<DeFi />} />
+                    <Route path="/governance" element={<Governance />} />
+                    <Route path="/marketplace" element={<Marketplace />} />
+                    <Route path="/advanced" element={<Advanced />} />
                     <Route path="/activity" element={<Activity />} />
                     <Route path="/status" element={<Status />} />
                     <Route path="/settings" element={<Settings />} />
-                    <Route path="/swap" element={<Swap />} />
-                    <Route path="/pool" element={<Pool />} />
-                    <Route path="/analyzer" element={<Analyzer />} />
                   </Routes>
                 </main>
                 <Footer />
                 <NotificationContainer />
                 <ConnectionStatus />
                 <TransactionStatus />
+                <VoiceControl />
               </div>
             </Router>
           </NotificationProvider>

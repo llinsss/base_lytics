@@ -16,12 +16,12 @@ export function useTokenSwap() {
 
   const swap = async (amountIn: bigint, tokenIn: string, tokenOut: string) => {
     try {
-      addNotification('Swapping tokens...', 'info');
+      addNotification({ title: 'Swapping tokens...', type: 'info' });
       // Mock swap transaction
       await new Promise(resolve => setTimeout(resolve, 2000));
-      addNotification('Swap completed!', 'success');
+      addNotification({ title: 'Swap completed!', type: 'success' });
     } catch (error) {
-      addNotification('Swap failed', 'error');
+      addNotification({ title: 'Swap failed', type: 'error' });
     }
   };
 

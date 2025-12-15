@@ -15,7 +15,7 @@ interface Proposal {
 export function useGovernance() {
   const { addNotification } = useNotifications();
   const { writeContract, isPending } = useWriteContract();
-  
+
   const [proposals] = useState<Proposal[]>([
     {
       id: 1,
@@ -39,21 +39,21 @@ export function useGovernance() {
 
   const vote = async (proposalId: number, support: boolean) => {
     try {
-      addNotification('Submitting vote...', 'info');
+      addNotification({ title: 'Submitting vote...', type: 'info' });
       await new Promise(resolve => setTimeout(resolve, 2000));
-      addNotification(`Vote ${support ? 'for' : 'against'} submitted!`, 'success');
+      addNotification({ title: `Vote ${support ? 'for' : 'against'} submitted!`, type: 'success' });
     } catch (error) {
-      addNotification('Vote failed', 'error');
+      addNotification({ title: 'Vote failed', type: 'error' });
     }
   };
 
   const createProposal = async (title: string, description: string) => {
     try {
-      addNotification('Creating proposal...', 'info');
+      addNotification({ title: 'Creating proposal...', type: 'info' });
       await new Promise(resolve => setTimeout(resolve, 2000));
-      addNotification('Proposal created successfully!', 'success');
+      addNotification({ title: 'Proposal created successfully!', type: 'success' });
     } catch (error) {
-      addNotification('Failed to create proposal', 'error');
+      addNotification({ title: 'Failed to create proposal', type: 'error' });
     }
   };
 

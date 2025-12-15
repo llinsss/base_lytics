@@ -9,21 +9,21 @@ export function useLiquidityPool() {
 
   const addLiquidity = async (amountA: bigint, amountB: bigint) => {
     try {
-      addNotification('Adding liquidity...', 'info');
+      addNotification({ title: 'Adding liquidity...', type: 'info' });
       await new Promise(resolve => setTimeout(resolve, 2000));
-      addNotification('Liquidity added successfully!', 'success');
+      addNotification({ title: 'Liquidity added successfully!', type: 'success' });
     } catch (error) {
-      addNotification('Failed to add liquidity', 'error');
+      addNotification({ title: 'Failed to add liquidity', type: 'error' });
     }
   };
 
   const removeLiquidity = async (lpTokens: bigint) => {
     try {
-      addNotification('Removing liquidity...', 'info');
+      addNotification({ title: 'Removing liquidity...', type: 'info' });
       await new Promise(resolve => setTimeout(resolve, 2000));
-      addNotification('Liquidity removed successfully!', 'success');
+      addNotification({ title: 'Liquidity removed successfully!', type: 'success' });
     } catch (error) {
-      addNotification('Failed to remove liquidity', 'error');
+      addNotification({ title: 'Failed to remove liquidity', type: 'error' });
     }
   };
 

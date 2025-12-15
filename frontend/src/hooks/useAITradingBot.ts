@@ -21,10 +21,10 @@ export function useAITradingBot() {
   const [botStatus, setBotStatus] = useState<'running' | 'paused' | 'stopped'>('running');
 
   const toggleStrategy = (id: string) => {
-    setStrategies(prev => prev.map(s => 
+    setStrategies(prev => prev.map(s =>
       s.id === id ? { ...s, active: !s.active } : s
     ));
-    addNotification('Strategy updated', 'success');
+    addNotification({ title: 'Strategy updated', type: 'success' });
   };
 
   const createStrategy = (name: string, type: TradingStrategy['type']) => {
@@ -37,7 +37,7 @@ export function useAITradingBot() {
       trades: 0
     };
     setStrategies(prev => [...prev, newStrategy]);
-    addNotification('Strategy created', 'success');
+    addNotification({ title: 'Strategy created', type: 'success' });
   };
 
   return { strategies, botStatus, setBotStatus, toggleStrategy, createStrategy };
