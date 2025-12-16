@@ -57,18 +57,13 @@ export function WalletConnect() {
   }
 
   return (
-    <div className="flex gap-2">
-      {connectors.map((connector) => (
-        <button
-          key={connector.uid}
-          onClick={() => connect({ connector })}
-          disabled={isPending}
-          className="btn-primary"
-        >
-          {isPending ? 'Connecting...' : `Connect ${connector.name}`}
-        </button>
-      ))}
-    </div>
+    <button
+      onClick={() => connect({ connector: connectors[0] })}
+      disabled={isPending}
+      className="btn-primary"
+    >
+      {isPending ? 'Connecting...' : 'Connect Wallet'}
+    </button>
   );
 }
 
