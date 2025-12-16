@@ -47,7 +47,7 @@ function Header() {
   useTheme(); // Apply theme changes
 
   return (
-    <header className="bg-white shadow-sm border-b dark:bg-gray-800 dark:border-gray-700">
+    <header className="bg-white shadow-sm border-b dark:bg-gray-900 dark:border-gray-800">
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-6">
@@ -153,7 +153,7 @@ function Header() {
 
 function Footer() {
   return (
-    <footer className="bg-gray-50 border-t mt-20 dark:bg-gray-900 dark:border-gray-700">
+    <footer className="bg-gray-50 border-t mt-20 dark:bg-gray-900 dark:border-gray-800">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="text-center text-gray-600 dark:text-gray-400">
           <p>&copy; 2024 BaseLytics. Built on Base Network.</p>
@@ -180,7 +180,7 @@ function App() {
         <SettingsProvider>
           <NotificationProvider>
             <Router>
-              <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+              <div className="min-h-screen bg-gray-50 dark:bg-black">
                 <Header />
                 <main>
                   <Routes>
