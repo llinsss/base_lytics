@@ -1,11 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useNotifications } from '../contexts/NotificationContext';
 
+declare global {
+  interface Window {
+    SpeechRecognition: any;
+    webkitSpeechRecognition: any;
+  }
+}
+
 export function useVoiceCommands() {
   const { addNotification } = useNotifications();
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState('');
-  const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
+  const [recognition, setRecognition] = useState<any>(null);
 
   useEffect(() => {
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
@@ -16,7 +23,7 @@ export function useVoiceCommands() {
       recognitionInstance.interimResults = false;
       recognitionInstance.lang = 'en-US';
 
-      recognitionInstance.onresult = (event) => {
+      recognitionInstance.onresult = (event: any) => {
         const command = event.results[0][0].transcript.toLowerCase();
         setTranscript(command);
         processCommand(command);
