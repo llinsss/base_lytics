@@ -19,3 +19,6 @@ export { useOptionsTrading } from './useOptionsTrading';
 export { useSocialTrading } from './useSocialTrading';
 export { useGameFi } from './useGameFi';
 export { useVoiceCommands } from './useVoiceCommands';
+export { useZKPrivacy } from './useZKPrivacy';
+export { useAccountAbstraction } from './useAccountAbstraction';
+export { useRealWorldAssets } from './useRealWorldAssets';
