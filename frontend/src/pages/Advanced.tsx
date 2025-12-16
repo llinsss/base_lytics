@@ -6,6 +6,8 @@ import { CrossChainBridge } from '../components/CrossChainBridge';
 import { OptionsTrading } from '../components/OptionsTrading';
 import { SocialTrading } from '../components/SocialTrading';
 import { GameFi } from '../components/GameFi';
+import { PrivacyPanel } from '../components/PrivacyPanel';
+import { RealWorldAssets } from '../components/RealWorldAssets';
 
 export function Advanced() {
   const { isConnected } = useAccount();
@@ -24,7 +26,9 @@ export function Advanced() {
     { id: 'bridge', name: 'Cross-Chain Bridge', icon: '🌉' },
     { id: 'options', name: 'Options Trading', icon: '📊' },
     { id: 'social', name: 'Social Trading', icon: '👥' },
-    { id: 'gamefi', name: 'GameFi Hub', icon: '🎮' }
+    { id: 'gamefi', name: 'GameFi Hub', icon: '🎮' },
+    { id: 'privacy', name: 'Privacy & Security', icon: '🔒' },
+    { id: 'rwa', name: 'Real World Assets', icon: '🌍' }
   ];
 
   return (
@@ -57,6 +61,8 @@ export function Advanced() {
         {activeFeature === 'options' && <OptionsTrading />}
         {activeFeature === 'social' && <SocialTrading />}
         {activeFeature === 'gamefi' && <GameFi />}
+        {activeFeature === 'privacy' && <PrivacyPanel />}
+        {activeFeature === 'rwa' && <RealWorldAssets />}
       </div>
     </div>
   );
