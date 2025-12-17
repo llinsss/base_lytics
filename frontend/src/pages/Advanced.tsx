@@ -8,6 +8,9 @@ import { SocialTrading } from '../components/SocialTrading';
 import { GameFi } from '../components/GameFi';
 import { PrivacyPanel } from '../components/PrivacyPanel';
 import { RealWorldAssets } from '../components/RealWorldAssets';
+import { PerpetualFutures } from '../components/PerpetualFutures';
+import { FlashLoans } from '../components/FlashLoans';
+import { PortfolioBacktest } from '../components/PortfolioBacktest';
 
 export function Advanced() {
   const { isConnected } = useAccount();
@@ -28,7 +31,10 @@ export function Advanced() {
     { id: 'social', name: 'Social Trading', icon: '👥' },
     { id: 'gamefi', name: 'GameFi Hub', icon: '🎮' },
     { id: 'privacy', name: 'Privacy & Security', icon: '🔒' },
-    { id: 'rwa', name: 'Real World Assets', icon: '🌍' }
+    { id: 'rwa', name: 'Real World Assets', icon: '🌍' },
+    { id: 'futures', name: 'Perpetual Futures', icon: '⚡' },
+    { id: 'flash', name: 'Flash Loans', icon: '⚡' },
+    { id: 'backtest', name: 'Portfolio Backtest', icon: '📊' }
   ];
 
   return (
@@ -63,6 +69,9 @@ export function Advanced() {
         {activeFeature === 'gamefi' && <GameFi />}
         {activeFeature === 'privacy' && <PrivacyPanel />}
         {activeFeature === 'rwa' && <RealWorldAssets />}
+        {activeFeature === 'futures' && <PerpetualFutures />}
+        {activeFeature === 'flash' && <FlashLoans />}
+        {activeFeature === 'backtest' && <PortfolioBacktest />}
       </div>
     </div>
   );
