@@ -22,3 +22,6 @@ export { useVoiceCommands } from './useVoiceCommands';
 export { useZKPrivacy } from './useZKPrivacy';
 export { useAccountAbstraction } from './useAccountAbstraction';
 export { useRealWorldAssets } from './useRealWorldAssets';
+export { usePerpetualFutures } from './usePerpetualFutures';
+export { useFlashLoans } from './useFlashLoans';
+export { usePortfolioBacktest } from './usePortfolioBacktest';
