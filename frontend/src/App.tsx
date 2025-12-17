@@ -16,6 +16,7 @@ import { Marketplace } from './pages/Marketplace';
 import { Advanced } from './pages/Advanced';
 import { WalletConnect } from './components/WalletConnect';
 import { NetworkSwitcher } from './components/NetworkSwitcher';
+import { ThemeToggle } from './components/ThemeToggle';
 import { ConnectionStatus } from './components/ConnectionStatus';
 import { TransactionStatus } from './components/TransactionStatus';
 import { VoiceControl } from './components/VoiceControl';
@@ -142,6 +143,7 @@ function Header() {
             </nav>
           </div>
           <div className="flex items-center gap-4">
+            <ThemeToggle />
             <NetworkSwitcher />
             <WalletConnect />
           </div>
