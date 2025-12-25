@@ -1,11 +1,15 @@
 import React from 'react';
 import { useAIAnalytics } from '../hooks/useAIAnalytics';
+import { SentimentDashboard } from './SentimentDashboard';
 
 export function AIInsights() {
   const { riskScore, predictions, recommendations } = useAIAnalytics();
 
   return (
     <div className="space-y-6">
+      {/* New Sentiment Dashboard */}
+      <SentimentDashboard />
+
       {/* Risk Score */}
       <div className="card">
         <h3 className="text-lg font-semibold mb-4 dark:text-white">🤖 AI Risk Assessment</h3>
@@ -13,20 +17,18 @@ export function AIInsights() {
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-gray-600 dark:text-gray-400">Risk Level</span>
-              <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                riskScore.level === 'Low' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
+              <span className={`px-3 py-1 rounded-full text-sm font-medium ${riskScore.level === 'Low' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
                 riskScore.level === 'Medium' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
-                'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
-              }`}>
+                  'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+                }`}>
                 {riskScore.level}
               </span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
               <div
-                className={`h-2 rounded-full ${
-                  riskScore.level === 'Low' ? 'bg-green-500' :
+                className={`h-2 rounded-full ${riskScore.level === 'Low' ? 'bg-green-500' :
                   riskScore.level === 'Medium' ? 'bg-yellow-500' : 'bg-red-500'
-                }`}
+                  }`}
                 style={{ width: `${riskScore.score}%` }}
               />
             </div>
