@@ -2,24 +2,64 @@ import React, { useState } from 'react';
 import { useStaking } from '../hooks';
 import { formatEther, parseEther } from 'viem';
 import { useAccount } from 'wagmi';
+import { Skeleton } from './LoadingSkeleton';
+import { useNotifications } from '../contexts/NotificationContext';
 
 export function StakingCard() {
   const { address } = useAccount();
-  const { stakedBalance, stake, unstake, isPending } = useStaking();
+  const { stakedBalance, stake, unstake, isPending, isLoading } = useStaking();
+  const { addNotification } = useNotifications();
   const [stakeAmount, setStakeAmount] = useState('');
   const [unstakeAmount, setUnstakeAmount] = useState('');
 
+  const isValidStakeAmount = stakeAmount ? parseFloat(stakeAmount) > 0 : true;
+  const isValidUnstakeAmount = unstakeAmount ? parseFloat(unstakeAmount) > 0 : true;
+
   const handleStake = () => {
-    if (stakeAmount) {
+    if (!stakeAmount || !isValidStakeAmount) {
+      addNotification({
+        type: 'error',
+        title: 'Invalid Amount',
+        message: 'Please enter a valid amount to stake',
+        duration: 3000,
+      });
+      return;
+    }
+
+    try {
       stake(parseEther(stakeAmount));
       setStakeAmount('');
+    } catch (error: any) {
+      addNotification({
+        type: 'error',
+        title: 'Staking Failed',
+        message: error.message || 'Failed to stake tokens',
+        duration: 5000,
+      });
     }
   };
 
   const handleUnstake = () => {
-    if (unstakeAmount) {
+    if (!unstakeAmount || !isValidUnstakeAmount) {
+      addNotification({
+        type: 'error',
+        title: 'Invalid Amount',
+        message: 'Please enter a valid amount to unstake',
+        duration: 3000,
+      });
+      return;
+    }
+
+    try {
       unstake(parseEther(unstakeAmount));
       setUnstakeAmount('');
+    } catch (error: any) {
+      addNotification({
+        type: 'error',
+        title: 'Unstaking Failed',
+        message: error.message || 'Failed to unstake tokens',
+        duration: 5000,
+      });
     }
   };
 
@@ -29,9 +69,13 @@ export function StakingCard() {
 
       <div className="mb-4">
         <p className="text-sm text-gray-600 dark:text-gray-400">Staked Balance</p>
-        <p className="text-2xl font-bold dark:text-white">
-          {formatEther(stakedBalance as bigint)} BLT
-        </p>
+        {isLoading ? (
+          <Skeleton height={32} width="60%" className="mt-2" />
+        ) : (
+          <p className="text-2xl font-bold dark:text-white">
+            {formatEther(stakedBalance as bigint)} BLT
+          </p>
+        )}
       </div>
 
       {address && (
@@ -41,19 +85,28 @@ export function StakingCard() {
             <div className="flex gap-2">
               <input
                 type="number"
+                step="any"
+                min="0"
                 placeholder="Amount to stake"
                 value={stakeAmount}
                 onChange={(e) => setStakeAmount(e.target.value)}
-                className="flex-1 px-3 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+                className={`flex-1 px-3 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:text-white ${
+                  stakeAmount && !isValidStakeAmount ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
+                }`}
               />
               <button
                 onClick={handleStake}
-                disabled={isPending || !stakeAmount}
-                className="btn-primary"
+                disabled={isPending || !stakeAmount || !isValidStakeAmount}
+                className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Stake
               </button>
             </div>
+            {stakeAmount && !isValidStakeAmount && (
+              <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                Amount must be greater than 0
+              </p>
+            )}
           </div>
 
           <div>
@@ -61,19 +114,28 @@ export function StakingCard() {
             <div className="flex gap-2">
               <input
                 type="number"
+                step="any"
+                min="0"
                 placeholder="Amount to unstake"
                 value={unstakeAmount}
                 onChange={(e) => setUnstakeAmount(e.target.value)}
-                className="flex-1 px-3 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+                className={`flex-1 px-3 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:text-white ${
+                  unstakeAmount && !isValidUnstakeAmount ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
+                }`}
               />
               <button
                 onClick={handleUnstake}
-                disabled={isPending || !unstakeAmount}
-                className="btn-primary"
+                disabled={isPending || !unstakeAmount || !isValidUnstakeAmount}
+                className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Unstake
               </button>
             </div>
+            {unstakeAmount && !isValidUnstakeAmount && (
+              <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                Amount must be greater than 0
+              </p>
+            )}
           </div>
         </div>
       )}
