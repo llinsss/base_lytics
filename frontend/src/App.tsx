@@ -1,25 +1,29 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { WagmiProvider } from 'wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createConfig, http } from 'wagmi';
 import { baseSepolia, base } from 'wagmi/chains';
 import { injected, walletConnect } from 'wagmi/connectors';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { Dashboard } from './pages/Dashboard';
-import { Analytics } from './pages/Analytics';
-import { Activity } from './pages/Activity';
-import { Status } from './pages/Status';
-import { Settings } from './pages/Settings';
-import { DeFi } from './pages/DeFi';
-import { Governance } from './pages/Governance';
-import { Marketplace } from './pages/Marketplace';
-import { Advanced } from './pages/Advanced';
+import {
+  Dashboard,
+  Analytics,
+  Activity,
+  Status,
+  Settings,
+  DeFi,
+  Governance,
+  Marketplace,
+  Advanced,
+} from './hooks/useLazyRoutes';
+import { ChartSkeleton } from './components/LoadingSkeleton';
 import { WalletConnect } from './components/WalletConnect';
 import { NetworkSwitcher } from './components/NetworkSwitcher';
 import { ThemeToggle } from './components/ThemeToggle';
 import { ConnectionStatus } from './components/ConnectionStatus';
 import { TransactionStatus } from './components/TransactionStatus';
 import { VoiceControl } from './components/VoiceControl';
+import { MobileNav } from './components/MobileNav';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { SettingsProvider } from './contexts/SettingsContext';
 import { NotificationContainer } from './components/notifications/NotificationContainer';
@@ -59,13 +63,14 @@ function Header() {
               </div>
               <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">BaseLytics</h1>
             </Link>
-            <nav className="flex gap-4">
+            <nav className="hidden md:flex gap-4">
               <Link
                 to="/"
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === '/'
                   ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
                   : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
                   }`}
+                aria-current={location.pathname === '/' ? 'page' : undefined}
               >
                 Dashboard
               </Link>
@@ -75,6 +80,7 @@ function Header() {
                   ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
                   : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
                   }`}
+                aria-current={location.pathname === '/analytics' ? 'page' : undefined}
               >
                 Analytics
               </Link>
@@ -84,6 +90,7 @@ function Header() {
                   ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
                   : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
                   }`}
+                aria-current={location.pathname === '/activity' ? 'page' : undefined}
               >
                 Activity
               </Link>
@@ -93,6 +100,7 @@ function Header() {
                   ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
                   : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
                   }`}
+                aria-current={location.pathname === '/status' ? 'page' : undefined}
               >
                 Status
               </Link>
@@ -102,6 +110,7 @@ function Header() {
                   ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
                   : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
                   }`}
+                aria-current={location.pathname === '/defi' ? 'page' : undefined}
               >
                 DeFi
               </Link>
@@ -111,6 +120,7 @@ function Header() {
                   ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
                   : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
                   }`}
+                aria-current={location.pathname === '/governance' ? 'page' : undefined}
               >
                 Governance
               </Link>
@@ -120,6 +130,7 @@ function Header() {
                   ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
                   : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
                   }`}
+                aria-current={location.pathname === '/marketplace' ? 'page' : undefined}
               >
                 Marketplace
               </Link>
@@ -129,6 +140,7 @@ function Header() {
                   ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
                   : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
                   }`}
+                aria-current={location.pathname === '/advanced' ? 'page' : undefined}
               >
                 Advanced
               </Link>
@@ -138,15 +150,21 @@ function Header() {
                   ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
                   : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
                   }`}
+                aria-current={location.pathname === '/settings' ? 'page' : undefined}
               >
                 Settings
               </Link>
             </nav>
+            <div className="md:hidden">
+              <MobileNav />
+            </div>
           </div>
           <div className="flex items-center gap-4">
             <ThemeToggle />
             <NetworkSwitcher />
-            <WalletConnect />
+            <div className="hidden md:block">
+              <WalletConnect />
+            </div>
           </div>
         </div>
       </div>
@@ -186,19 +204,28 @@ function App() {
               <Router>
                 <div className="min-h-screen bg-gray-50 dark:bg-black">
                   <Header />
-                  <main>
+                  {/* Skip to main content link for accessibility */}
+                  <a
+                    href="#main-content"
+                    className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-base-600 focus:text-white focus:rounded-lg"
+                  >
+                    Skip to main content
+                  </a>
+                  <main id="main-content" tabIndex={-1}>
                     <ErrorBoundary>
-                      <Routes>
-                        <Route path="/" element={<Dashboard />} />
-                        <Route path="/analytics" element={<Analytics />} />
-                        <Route path="/defi" element={<DeFi />} />
-                        <Route path="/governance" element={<Governance />} />
-                        <Route path="/marketplace" element={<Marketplace />} />
-                        <Route path="/advanced" element={<Advanced />} />
-                        <Route path="/activity" element={<Activity />} />
-                        <Route path="/status" element={<Status />} />
-                        <Route path="/settings" element={<Settings />} />
-                      </Routes>
+                      <Suspense fallback={<div className="max-w-7xl mx-auto px-4 py-8"><ChartSkeleton /></div>}>
+                        <Routes>
+                          <Route path="/" element={<Dashboard />} />
+                          <Route path="/analytics" element={<Analytics />} />
+                          <Route path="/defi" element={<DeFi />} />
+                          <Route path="/governance" element={<Governance />} />
+                          <Route path="/marketplace" element={<Marketplace />} />
+                          <Route path="/advanced" element={<Advanced />} />
+                          <Route path="/activity" element={<Activity />} />
+                          <Route path="/status" element={<Status />} />
+                          <Route path="/settings" element={<Settings />} />
+                        </Routes>
+                      </Suspense>
                     </ErrorBoundary>
                   </main>
                   <Footer />
