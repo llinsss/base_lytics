@@ -27,3 +27,5 @@ export { useFlashLoans } from './useFlashLoans';
 export { usePortfolioBacktest } from './usePortfolioBacktest';
 export { useCopyToClipboard } from './useCopyToClipboard';
 export { useRealTimeAnalytics } from './useRealTimeAnalytics';
+export { useTransactionSimulation } from './useTransactionSimulation';
+export { useDebounce } from './useDebounce';
