@@ -23,6 +23,7 @@ import { VoiceControl } from './components/VoiceControl';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { SettingsProvider } from './contexts/SettingsContext';
 import { NotificationContainer } from './components/notifications/NotificationContainer';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { useTheme } from './hooks/useTheme';
 import { loadDeploymentAddresses } from './utils/loadDeployments';
 
@@ -177,37 +178,41 @@ function App() {
   }, []);
 
   return (
-    <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>
-        <SettingsProvider>
-          <NotificationProvider>
-            <Router>
-              <div className="min-h-screen bg-gray-50 dark:bg-black">
-                <Header />
-                <main>
-                  <Routes>
-                    <Route path="/" element={<Dashboard />} />
-                    <Route path="/analytics" element={<Analytics />} />
-                    <Route path="/defi" element={<DeFi />} />
-                    <Route path="/governance" element={<Governance />} />
-                    <Route path="/marketplace" element={<Marketplace />} />
-                    <Route path="/advanced" element={<Advanced />} />
-                    <Route path="/activity" element={<Activity />} />
-                    <Route path="/status" element={<Status />} />
-                    <Route path="/settings" element={<Settings />} />
-                  </Routes>
-                </main>
-                <Footer />
-                <NotificationContainer />
-                <ConnectionStatus />
-                <TransactionStatus />
-                <VoiceControl />
-              </div>
-            </Router>
-          </NotificationProvider>
-        </SettingsProvider>
-      </QueryClientProvider>
-    </WagmiProvider>
+    <ErrorBoundary>
+      <WagmiProvider config={config}>
+        <QueryClientProvider client={queryClient}>
+          <SettingsProvider>
+            <NotificationProvider>
+              <Router>
+                <div className="min-h-screen bg-gray-50 dark:bg-black">
+                  <Header />
+                  <main>
+                    <ErrorBoundary>
+                      <Routes>
+                        <Route path="/" element={<Dashboard />} />
+                        <Route path="/analytics" element={<Analytics />} />
+                        <Route path="/defi" element={<DeFi />} />
+                        <Route path="/governance" element={<Governance />} />
+                        <Route path="/marketplace" element={<Marketplace />} />
+                        <Route path="/advanced" element={<Advanced />} />
+                        <Route path="/activity" element={<Activity />} />
+                        <Route path="/status" element={<Status />} />
+                        <Route path="/settings" element={<Settings />} />
+                      </Routes>
+                    </ErrorBoundary>
+                  </main>
+                  <Footer />
+                  <NotificationContainer />
+                  <ConnectionStatus />
+                  <TransactionStatus />
+                  <VoiceControl />
+                </div>
+              </Router>
+            </NotificationProvider>
+          </SettingsProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
+    </ErrorBoundary>
   );
 }
 
