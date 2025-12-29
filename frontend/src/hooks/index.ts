@@ -25,3 +25,5 @@ export { useRealWorldAssets } from './useRealWorldAssets';
 export { usePerpetualFutures } from './usePerpetualFutures';
 export { useFlashLoans } from './useFlashLoans';
 export { usePortfolioBacktest } from './usePortfolioBacktest';
+export { useCopyToClipboard } from './useCopyToClipboard';
+export { useRealTimeAnalytics } from './useRealTimeAnalytics';
