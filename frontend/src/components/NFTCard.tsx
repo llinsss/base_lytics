@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNFTBalance, useNFTMint } from '../hooks';
 import { useAccount } from 'wagmi';
+import { Skeleton } from './LoadingSkeleton';
 
 export function NFTCard() {
   const { address } = useAccount();
@@ -19,9 +20,13 @@ export function NFTCard() {
 
       <div className="mb-4">
         <p className="text-sm text-gray-600 dark:text-gray-400">Owned NFTs</p>
-        <p className="text-2xl font-bold dark:text-white">
-          {isLoading ? '...' : (balance as bigint).toString()}
-        </p>
+        {isLoading ? (
+          <Skeleton height={32} width="40%" className="mt-2" />
+        ) : (
+          <p className="text-2xl font-bold dark:text-white">
+            {(balance as bigint).toString()}
+          </p>
+        )}
       </div>
 
       {address && (
@@ -33,7 +38,7 @@ export function NFTCard() {
           <button
             onClick={handleMint}
             disabled={isPending}
-            className="btn-primary w-full"
+            className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isPending ? 'Minting...' : 'Mint NFT'}
           </button>
