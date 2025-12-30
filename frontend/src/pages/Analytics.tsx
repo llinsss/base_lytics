@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useAccount } from 'wagmi';
 import { ConnectWalletPrompt } from '../components/WalletConnect';
 import { PortfolioOverview } from '../components/PortfolioOverview';
 import { BalanceChart } from '../components/charts/BalanceChart';
-import { TransactionHistory } from '../components/TransactionHistory';
+import { TransactionHistoryEnhanced } from '../components/TransactionHistoryEnhanced';
 import { ErrorBoundary } from '../components/ErrorBoundary';
 import { ChartSkeleton, MetricCardSkeleton } from '../components/LoadingSkeleton';
 import { useRealTimeAnalytics } from '../hooks/useRealTimeAnalytics';
+import { downloadCSV } from '../utils/export';
 
 export function Analytics() {
   const { isConnected } = useAccount();
@@ -130,7 +131,7 @@ export function Analytics() {
 
         <div className="mt-6">
           <ErrorBoundary>
-            <TransactionHistory />
+            <TransactionHistoryEnhanced />
           </ErrorBoundary>
         </div>
       </div>
