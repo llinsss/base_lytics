@@ -1,18 +1,18 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useNFTBalance, useNFTMint } from '../hooks';
 import { useAccount } from 'wagmi';
 import { Skeleton } from './LoadingSkeleton';
 
-export function NFTCard() {
+export const NFTCard = React.memo(function NFTCard() {
   const { address } = useAccount();
   const { balance, isLoading } = useNFTBalance();
   const { mint, isPending } = useNFTMint();
 
-  const handleMint = () => {
+  const handleMint = useCallback(() => {
     if (address) {
       mint(address);
     }
-  };
+  }, [address, mint]);
 
   return (
     <div className="card">
@@ -46,4 +46,4 @@ export function NFTCard() {
       )}
     </div>
   );
-}
+});
