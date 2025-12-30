@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { useStaking } from '../hooks';
 import { formatEther, parseEther } from 'viem';
 import { useAccount } from 'wagmi';
 import { Skeleton } from './LoadingSkeleton';
 import { useNotifications } from '../contexts/NotificationContext';
 
-export function StakingCard() {
+export const StakingCard = React.memo(function StakingCard() {
   const { address } = useAccount();
   const { stakedBalance, stake, unstake, isPending, isLoading } = useStaking();
   const { addNotification } = useNotifications();
   const [stakeAmount, setStakeAmount] = useState('');
   const [unstakeAmount, setUnstakeAmount] = useState('');
 
-  const isValidStakeAmount = stakeAmount ? parseFloat(stakeAmount) > 0 : true;
-  const isValidUnstakeAmount = unstakeAmount ? parseFloat(unstakeAmount) > 0 : true;
+  const isValidStakeAmount = useMemo(() => stakeAmount ? parseFloat(stakeAmount) > 0 : true, [stakeAmount]);
+  const isValidUnstakeAmount = useMemo(() => unstakeAmount ? parseFloat(unstakeAmount) > 0 : true, [unstakeAmount]);
 
-  const handleStake = () => {
+  const handleStake = useCallback(() => {
     if (!stakeAmount || !isValidStakeAmount) {
       addNotification({
         type: 'error',
@@ -37,9 +37,9 @@ export function StakingCard() {
         duration: 5000,
       });
     }
-  };
+  }, [stakeAmount, isValidStakeAmount, stake, addNotification]);
 
-  const handleUnstake = () => {
+  const handleUnstake = useCallback(() => {
     if (!unstakeAmount || !isValidUnstakeAmount) {
       addNotification({
         type: 'error',
@@ -61,7 +61,7 @@ export function StakingCard() {
         duration: 5000,
       });
     }
-  };
+  }, [unstakeAmount, isValidUnstakeAmount, unstake, addNotification]);
 
   return (
     <div className="card">
@@ -141,4 +141,4 @@ export function StakingCard() {
       )}
     </div>
   );
-}
+});
