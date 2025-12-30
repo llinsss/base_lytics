@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { useTokenBalance, useTokenTransfer } from '../hooks';
 import { formatEther, parseEther, isAddress } from 'viem';
 import { useAccount } from 'wagmi';
 import { Skeleton } from './LoadingSkeleton';
 import { useNotifications } from '../contexts/NotificationContext';
 
-export function TokenCard() {
+export const TokenCard = React.memo(function TokenCard() {
   const { address } = useAccount();
   const { balance, isLoading } = useTokenBalance();
   const { transfer, isPending } = useTokenTransfer();
@@ -13,10 +13,10 @@ export function TokenCard() {
   const [recipient, setRecipient] = useState('');
   const [amount, setAmount] = useState('');
 
-  const isValidAddress = recipient ? isAddress(recipient) : true;
-  const isValidAmount = amount ? parseFloat(amount) > 0 : true;
+  const isValidAddress = useMemo(() => recipient ? isAddress(recipient) : true, [recipient]);
+  const isValidAmount = useMemo(() => amount ? parseFloat(amount) > 0 : true, [amount]);
 
-  const handleTransfer = () => {
+  const handleTransfer = useCallback(() => {
     if (!recipient || !amount) {
       addNotification({
         type: 'error',
@@ -59,7 +59,7 @@ export function TokenCard() {
         duration: 5000,
       });
     }
-  };
+  }, [recipient, amount, isValidAddress, isValidAmount, transfer, addNotification]);
 
   return (
     <div className="card">
@@ -123,4 +123,4 @@ export function TokenCard() {
       )}
     </div>
   );
-}
+});
