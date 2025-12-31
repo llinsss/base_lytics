@@ -29,6 +29,8 @@ export { useCopyToClipboard } from './useCopyToClipboard';
 export { useRealTimeAnalytics } from './useRealTimeAnalytics';
 export { useTransactionSimulation } from './useTransactionSimulation';
 export { useDebounce } from './useDebounce';
+export { useGasPrice, getGasPriceForSpeed } from './useGasPrice';
+export { useTransactionQueue } from './useTransactionQueue';
 export { useGasPrice, GAS_PRICE_TIERS, calculateGasPriceForTier } from './useGasPrice';
 export type { GasTier } from './useGasPrice';
 export { useTransactionQueue } from './useTransactionQueue';
