@@ -2,34 +2,29 @@
  * Export utilities for CSV, JSON, and other formats
  */
 
-export interface ExportableData {
-  [key: string]: string | number | boolean | null | undefined;
-}
-
 /**
- * Convert data array to CSV string
+ * Convert array of objects to CSV string
  */
-export function arrayToCSV(data: ExportableData[], headers?: string[]): string {
+export function arrayToCSV<T extends Record<string, any>>(
+  data: T[],
+  headers?: string[]
+): string {
   if (data.length === 0) return '';
 
-  // Use provided headers or extract from first row
+  // Get headers from first object if not provided
   const csvHeaders = headers || Object.keys(data[0]);
   
-  // Escape and quote CSV values
-  const escapeCSV = (value: any): string => {
-    if (value === null || value === undefined) return '';
-    const stringValue = String(value);
-    // If contains comma, quote, or newline, wrap in quotes and escape quotes
-    if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n')) {
-      return `"${stringValue.replace(/"/g, '""')}"`;
-    }
-    return stringValue;
-  };
-
-  // Create CSV rows
-  const headerRow = csvHeaders.map(escapeCSV).join(',');
+  // Create header row
+  const headerRow = csvHeaders.map(header => `"${String(header).replace(/"/g, '""')}"`).join(',');
+  
+  // Create data rows
   const dataRows = data.map(row =>
-    csvHeaders.map(header => escapeCSV(row[header])).join(',')
+    csvHeaders.map(header => {
+      const value = row[header];
+      if (value === null || value === undefined) return '';
+      const stringValue = String(value).replace(/"/g, '""');
+      return `"${stringValue}"`;
+    }).join(',')
   );
 
   return [headerRow, ...dataRows].join('\n');
@@ -38,8 +33,8 @@ export function arrayToCSV(data: ExportableData[], headers?: string[]): string {
 /**
  * Download data as CSV file
  */
-export function downloadCSV(
-  data: ExportableData[],
+export function downloadCSV<T extends Record<string, any>>(
+  data: T[],
   filename: string,
   headers?: string[]
 ): void {
@@ -60,7 +55,7 @@ export function downloadCSV(
 /**
  * Download data as JSON file
  */
-export function downloadJSON(data: any, filename: string): void {
+export function downloadJSON<T>(data: T, filename: string): void {
   const json = JSON.stringify(data, null, 2);
   const blob = new Blob([json], { type: 'application/json;charset=utf-8;' });
   const link = document.createElement('a');
@@ -76,36 +71,22 @@ export function downloadJSON(data: any, filename: string): void {
 }
 
 /**
- * Format date for CSV/export
+ * Format date for CSV export
  */
 export function formatDateForExport(date: Date | number | string): string {
-  const d = typeof date === 'number' ? new Date(date) : new Date(date);
+  const d = typeof date === 'string' || typeof date === 'number' ? new Date(date) : date;
   return d.toISOString();
 }
 
 /**
- * Format address for export (full address, not truncated)
+ * Format number for CSV export
  */
-export function formatAddressForExport(address: string): string {
-  return address;
-}
-
-/**
- * Format bigint/wei values for export (converted to readable format)
- */
-export function formatWeiForExport(value: bigint | string, decimals: number = 18): string {
-  const bigIntValue = typeof value === 'string' ? BigInt(value) : value;
-  const divisor = BigInt(10 ** decimals);
-  const wholePart = bigIntValue / divisor;
-  const fractionalPart = bigIntValue % divisor;
-  
-  if (fractionalPart === BigInt(0)) {
-    return wholePart.toString();
+export function formatNumberForExport(value: number | bigint | string): string {
+  if (typeof value === 'bigint') {
+    return value.toString();
   }
-  
-  const fractionalString = fractionalPart.toString().padStart(decimals, '0');
-  const trimmedFractional = fractionalString.replace(/0+$/, '');
-  
-  return `${wholePart}.${trimmedFractional}`;
+  if (typeof value === 'string') {
+    return value;
+  }
+  return value.toLocaleString('en-US', { maximumFractionDigits: 18 });
 }
-
