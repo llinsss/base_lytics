@@ -46,4 +46,4 @@ export const NFTCard = React.memo(function NFTCard() {
       )}
     </div>
   );
-});
+}););
