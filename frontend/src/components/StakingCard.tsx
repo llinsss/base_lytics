@@ -141,4 +141,4 @@ export const StakingCard = React.memo(function StakingCard() {
       )}
     </div>
   );
-});
+}););
