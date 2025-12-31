@@ -1,98 +1,108 @@
 import { useState, useEffect } from 'react';
 import { usePublicClient } from 'wagmi';
+import { formatGwei, parseGwei } from 'viem';
 
-export interface GasPriceData {
+export interface GasPriceInfo {
+  maxFeePerGas: bigint;
+  maxPriorityFeePerGas: bigint;
   gasPrice: bigint;
-  maxFeePerGas?: bigint;
-  maxPriorityFeePerGas?: bigint;
   formatted: {
-    gwei: string;
-    usd?: string;
+    maxFeePerGas: string;
+    maxPriorityFeePerGas: string;
+    gasPrice: string;
   };
+  speed: 'slow' | 'standard' | 'fast';
 }
 
-/**
- * Hook to fetch current gas prices
- */
-export function useGasPrice() {
+export function useGasPrice(refetchInterval: number = 15000) {
   const publicClient = usePublicClient();
-  const [gasPrice, setGasPrice] = useState<GasPriceData | null>(null);
+  const [gasPrice, setGasPrice] = useState<GasPriceInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchGasPrice = async () => {
-      if (!publicClient) return;
+  const fetchGasPrice = async () => {
+    if (!publicClient) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Get current gas price
+      const currentGasPrice = await publicClient.getGasPrice();
+
+      // Estimate priority fee (EIP-1559)
+      let maxFeePerGas = currentGasPrice;
+      let maxPriorityFeePerGas = parseGwei('1'); // Default 1 gwei
 
       try {
-        setLoading(true);
-        setError(null);
-
-        // Fetch gas price (legacy) or fee data (EIP-1559)
+        // Try to get fee data for EIP-1559
         const feeData = await publicClient.estimateFeesPerGas();
-        
-        const gasPriceValue = feeData.gasPrice || feeData.maxFeePerGas || BigInt(0);
-        const gwei = Number(gasPriceValue) / 1e9;
-
-        setGasPrice({
-          gasPrice: gasPriceValue,
-          maxFeePerGas: feeData.maxFeePerGas,
-          maxPriorityFeePerGas: feeData.maxPriorityFeePerGas,
-          formatted: {
-            gwei: gwei.toFixed(2),
-          },
-        });
-      } catch (err) {
-        console.error('Failed to fetch gas price:', err);
-        setError(err instanceof Error ? err.message : 'Failed to fetch gas price');
-      } finally {
-        setLoading(false);
+        if (feeData.maxFeePerGas) {
+          maxFeePerGas = feeData.maxFeePerGas;
+        }
+        if (feeData.maxPriorityFeePerGas) {
+          maxPriorityFeePerGas = feeData.maxPriorityFeePerGas;
+        }
+      } catch (e) {
+        // Fallback to legacy gas price if EIP-1559 not supported
+        maxFeePerGas = currentGasPrice;
       }
-    };
 
-    fetchGasPrice();
-    
-    // Refresh every 30 seconds
-    const interval = setInterval(fetchGasPrice, 30000);
-    return () => clearInterval(interval);
-  }, [publicClient]);
+      // Calculate speed tiers (approximate)
+      const basePrice = Number(formatGwei(currentGasPrice));
+      let speed: 'slow' | 'standard' | 'fast' = 'standard';
+      
+      if (basePrice < 0.5) speed = 'slow';
+      else if (basePrice > 2) speed = 'fast';
 
-  // Calculate USD cost (rough estimate, would need price oracle for accurate)
-  const estimateUSD = (gasLimit: bigint): string => {
-    if (!gasPrice) return 'N/A';
-    // Rough estimate: 1 ETH = $2000, adjust as needed
-    const ethPrice = 2000;
-    const totalWei = gasPrice.gasPrice * gasLimit;
-    const totalEth = Number(totalWei) / 1e18;
-    const totalUSD = totalEth * ethPrice;
-    return `$${totalUSD.toFixed(2)}`;
+      const gasPriceInfo: GasPriceInfo = {
+        maxFeePerGas,
+        maxPriorityFeePerGas,
+        gasPrice: currentGasPrice,
+        formatted: {
+          maxFeePerGas: formatGwei(maxFeePerGas),
+          maxPriorityFeePerGas: formatGwei(maxPriorityFeePerGas),
+          gasPrice: formatGwei(currentGasPrice),
+        },
+        speed,
+      };
+
+      setGasPrice(gasPriceInfo);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch gas price');
+      console.error('Error fetching gas price:', err);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  useEffect(() => {
+    fetchGasPrice();
+    const interval = setInterval(fetchGasPrice, refetchInterval);
+    return () => clearInterval(interval);
+  }, [publicClient, refetchInterval]);
 
   return {
     gasPrice,
     loading,
     error,
-    estimateUSD,
+    refetch: fetchGasPrice,
   };
 }
 
 /**
- * Gas price tiers for user selection
+ * Get recommended gas prices for different speed tiers
  */
-export const GAS_PRICE_TIERS = {
-  slow: { label: 'Slow', multiplier: 0.9 },
-  standard: { label: 'Standard', multiplier: 1.0 },
-  fast: { label: 'Fast', multiplier: 1.2 },
-  instant: { label: 'Instant', multiplier: 1.5 },
-} as const;
+export function getGasPriceForSpeed(
+  baseGasPrice: bigint,
+  speed: 'slow' | 'standard' | 'fast'
+): bigint {
+  const multipliers = {
+    slow: 0.9,      // 10% less
+    standard: 1.0,  // Base price
+    fast: 1.2,      // 20% more
+  };
 
-export type GasTier = keyof typeof GAS_PRICE_TIERS;
-
-/**
- * Calculate gas price for a specific tier
- */
-export function calculateGasPriceForTier(baseGasPrice: bigint, tier: GasTier): bigint {
-  const multiplier = GAS_PRICE_TIERS[tier].multiplier;
-  return (baseGasPrice * BigInt(Math.floor(multiplier * 100))) / BigInt(100);
+  const multiplier = multipliers[speed];
+  return (baseGasPrice * BigInt(Math.round(multiplier * 100))) / BigInt(100);
 }
-
