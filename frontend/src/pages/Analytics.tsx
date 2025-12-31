@@ -3,11 +3,10 @@ import { useAccount } from 'wagmi';
 import { ConnectWalletPrompt } from '../components/WalletConnect';
 import { PortfolioOverview } from '../components/PortfolioOverview';
 import { BalanceChart } from '../components/charts/BalanceChart';
-import { TransactionHistoryEnhanced } from '../components/TransactionHistoryEnhanced';
 import { ErrorBoundary } from '../components/ErrorBoundary';
 import { ChartSkeleton, MetricCardSkeleton } from '../components/LoadingSkeleton';
 import { useRealTimeAnalytics } from '../hooks/useRealTimeAnalytics';
-import { downloadCSV } from '../utils/export';
+import { downloadCSV, formatDateForExport } from '../utils/export';
 
 export function Analytics() {
   const { isConnected } = useAccount();
@@ -66,6 +65,21 @@ export function Analytics() {
               }`}
             >
               90d
+            </button>
+            <button
+              onClick={() => {
+                const exportData = data.map(point => ({
+                  Date: formatDateForExport(point.date),
+                  'Token Supply': point.tokenSupply,
+                  'NFTs Minted': point.nftMinted,
+                  'Total Staked': point.totalStaked,
+                  'Revenue (ETH)': point.revenue,
+                }));
+                downloadCSV(exportData, `analytics-${timeRange}d-${Date.now()}`);
+              }}
+              className="px-4 py-2 rounded-lg text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+            >
+              Export CSV
             </button>
           </div>
         </div>
@@ -131,7 +145,7 @@ export function Analytics() {
 
         <div className="mt-6">
           <ErrorBoundary>
-            <TransactionHistoryEnhanced />
+            {/* Transaction history can be added here if needed */}
           </ErrorBoundary>
         </div>
       </div>
