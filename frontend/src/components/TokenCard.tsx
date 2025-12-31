@@ -123,4 +123,4 @@ export const TokenCard = React.memo(function TokenCard() {
       )}
     </div>
   );
-});
+}););
