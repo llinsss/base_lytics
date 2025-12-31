@@ -1,23 +1,23 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 
 interface VirtualListProps<T> {
   items: T[];
-  renderItem: (item: T, index: number) => React.ReactNode;
   itemHeight: number;
   containerHeight: number;
+  renderItem: (item: T, index: number) => React.ReactNode;
   overscan?: number;
   className?: string;
 }
 
 /**
- * Simple virtual scrolling list component
- * Renders only visible items + overscan buffer for smooth scrolling
+ * Virtual scrolling list component for performance with large datasets
+ * Only renders visible items + overscan buffer
  */
 export function VirtualList<T>({
   items,
-  renderItem,
   itemHeight,
   containerHeight,
+  renderItem,
   overscan = 3,
   className = '',
 }: VirtualListProps<T>) {
@@ -25,7 +25,7 @@ export function VirtualList<T>({
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Calculate visible range
-  const { startIndex, endIndex, totalHeight } = useMemo(() => {
+  const { startIndex, endIndex, totalHeight, offsetY } = useMemo(() => {
     const visibleStart = Math.floor(scrollTop / itemHeight);
     const visibleEnd = Math.ceil((scrollTop + containerHeight) / itemHeight);
     
@@ -36,52 +36,29 @@ export function VirtualList<T>({
       startIndex: start,
       endIndex: end,
       totalHeight: items.length * itemHeight,
+      offsetY: start * itemHeight,
     };
   }, [scrollTop, itemHeight, containerHeight, items.length, overscan]);
+
+  // Handle scroll
+  const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
+    setScrollTop(e.currentTarget.scrollTop);
+  }, []);
 
   // Visible items
   const visibleItems = useMemo(() => {
     return items.slice(startIndex, endIndex);
   }, [items, startIndex, endIndex]);
 
-  // Handle scroll
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    setScrollTop(e.currentTarget.scrollTop);
-  };
-
-  // Auto-scroll to top when items change (optional)
-  useEffect(() => {
-    if (containerRef.current && items.length === 0) {
-      containerRef.current.scrollTop = 0;
-      setScrollTop(0);
-    }
-  }, [items.length]);
-
-  if (items.length === 0) {
-    return (
-      <div className={`${className} flex items-center justify-center`} style={{ height: containerHeight }}>
-        <p className="text-gray-500 dark:text-gray-400">No items to display</p>
-      </div>
-    );
-  }
-
   return (
     <div
       ref={containerRef}
-      className={`${className} overflow-auto`}
+      className={`overflow-auto ${className}`}
       style={{ height: containerHeight }}
       onScroll={handleScroll}
     >
       <div style={{ height: totalHeight, position: 'relative' }}>
-        <div
-          style={{
-            transform: `translateY(${startIndex * itemHeight}px)`,
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-          }}
-        >
+        <div style={{ transform: `translateY(${offsetY}px)` }}>
           {visibleItems.map((item, index) => (
             <div
               key={startIndex + index}
@@ -95,4 +72,3 @@ export function VirtualList<T>({
     </div>
   );
 }
-
