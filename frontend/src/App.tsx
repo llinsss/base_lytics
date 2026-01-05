@@ -26,6 +26,7 @@ import { VoiceControl } from './components/VoiceControl';
 import { MobileNav } from './components/MobileNav';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { SettingsProvider } from './contexts/SettingsContext';
+import { UserProfileProvider } from './contexts/UserProfileContext';
 import { NotificationContainer } from './components/notifications/NotificationContainer';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { useTheme } from './hooks/useTheme';
@@ -201,7 +202,8 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <SettingsProvider>
             <NotificationProvider>
-              <Router>
+              <UserProfileProvider>
+                <Router>
                 <div className="min-h-screen bg-gray-50 dark:bg-black">
                   <Header />
                   {/* Skip to main content link for accessibility */}
@@ -234,7 +236,8 @@ function App() {
                   <TransactionStatus />
                   <VoiceControl />
                 </div>
-              </Router>
+                </Router>
+              </UserProfileProvider>
             </NotificationProvider>
           </SettingsProvider>
         </QueryClientProvider>
