@@ -13,7 +13,7 @@ type TransactionType = 'all' | 'transfer' | 'mint' | 'stake' | 'nft' | 'swap';
 
 export function EnhancedTransactionHistory() {
   const { address } = useAccount();
-  const { transactions, loading, error, refetch } = useTransactionHistory();
+  const { transactions, loading, error, reload } = useTransactionHistory();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<TransactionFilter>('all');
   const [typeFilter, setTypeFilter] = useState<TransactionType>('all');
@@ -76,7 +76,7 @@ export function EnhancedTransactionHistory() {
       Status: tx.status || '',
       From: tx.from || '',
       To: tx.to || '',
-      Amount: tx.amount ? formatEther(tx.amount as bigint) : '',
+      Amount: tx.value ? formatEther(BigInt(tx.value)) : '',
       Contract: tx.contract || '',
       Description: tx.description || '',
       Block: tx.blockNumber || '',
@@ -108,7 +108,7 @@ export function EnhancedTransactionHistory() {
         </div>
         <div className="flex gap-2">
           <button
-            onClick={refetch}
+            onClick={reload}
             disabled={loading}
             className="btn-secondary text-sm"
           >
