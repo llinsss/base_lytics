@@ -7,7 +7,7 @@ import { useNotifications } from '../contexts/NotificationContext';
 
 export const StakingCard = React.memo(function StakingCard() {
   const { address } = useAccount();
-  const { stakedBalance, stake, unstake, isPending, isLoading } = useStaking();
+  const { stakedBalance, stake, unstake, isPending } = useStaking();
   const { addNotification } = useNotifications();
   const [stakeAmount, setStakeAmount] = useState('');
   const [unstakeAmount, setUnstakeAmount] = useState('');
@@ -69,7 +69,7 @@ export const StakingCard = React.memo(function StakingCard() {
 
       <div className="mb-4">
         <p className="text-sm text-gray-600 dark:text-gray-400">Staked Balance</p>
-        {isLoading ? (
+        {false ? (
           <Skeleton height={32} width="60%" className="mt-2" />
         ) : (
           <p className="text-2xl font-bold dark:text-white">
@@ -141,4 +141,4 @@ export const StakingCard = React.memo(function StakingCard() {
       )}
     </div>
   );
-}););
+});
