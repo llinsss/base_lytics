@@ -34,7 +34,7 @@ export function WalletConnect() {
         type: 'error',
         title: 'Connection Failed',
         message: connectError.message || 'Failed to connect wallet',
-        duration: 5000,
+        duration: 5000, 
       });
     }
   }, [connectError, addNotification]);
