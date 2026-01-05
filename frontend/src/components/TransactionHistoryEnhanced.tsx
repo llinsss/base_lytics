@@ -24,9 +24,9 @@ export function TransactionHistoryEnhanced() {
     // Filter by type
     if (filterType !== 'all') {
       filtered = filtered.filter(tx => {
-        if (filterType === 'token_transfer') return tx.type === 'transfer';
+        if (filterType === 'token_transfer') return tx.type === 'token_transfer';
         if (filterType === 'nft_mint') return tx.type === 'nft_mint';
-        if (filterType === 'nft_transfer') return tx.type === 'nft_transfer';
+        if (filterType === 'nft_transfer') return tx.type === 'token_transfer';
         if (filterType === 'stake') return tx.type === 'stake';
         if (filterType === 'unstake') return tx.type === 'unstake';
         return true;
