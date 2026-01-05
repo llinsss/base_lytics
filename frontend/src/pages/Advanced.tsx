@@ -11,6 +11,10 @@ import { RealWorldAssets } from '../components/RealWorldAssets';
 import { PerpetualFutures } from '../components/PerpetualFutures';
 import { FlashLoans } from '../components/FlashLoans';
 import { PortfolioBacktest } from '../components/PortfolioBacktest';
+import { UserProfile } from '../components/UserProfile';
+import { LimitOrders } from '../components/LimitOrders';
+import { PortfolioRebalancing } from '../components/PortfolioRebalancing';
+import { ChatSystem } from '../components/ChatSystem';
 
 export function Advanced() {
   const { isConnected } = useAccount();
@@ -34,7 +38,11 @@ export function Advanced() {
     { id: 'rwa', name: 'Real World Assets', icon: '🌍' },
     { id: 'futures', name: 'Perpetual Futures', icon: '⚡' },
     { id: 'flash', name: 'Flash Loans', icon: '⚡' },
-    { id: 'backtest', name: 'Portfolio Backtest', icon: '📊' }
+    { id: 'backtest', name: 'Portfolio Backtest', icon: '📊' },
+    { id: 'profile', name: 'User Profile', icon: '👤' },
+    { id: 'orders', name: 'Limit Orders', icon: '📋' },
+    { id: 'rebalance', name: 'Auto Rebalancing', icon: '⚖️' },
+    { id: 'chat', name: 'Community Chat', icon: '💬' }
   ];
 
   return (
@@ -72,6 +80,10 @@ export function Advanced() {
         {activeFeature === 'futures' && <PerpetualFutures />}
         {activeFeature === 'flash' && <FlashLoans />}
         {activeFeature === 'backtest' && <PortfolioBacktest />}
+        {activeFeature === 'profile' && <UserProfile />}
+        {activeFeature === 'orders' && <LimitOrders />}
+        {activeFeature === 'rebalance' && <PortfolioRebalancing />}
+        {activeFeature === 'chat' && <ChatSystem />}
       </div>
     </div>
   );

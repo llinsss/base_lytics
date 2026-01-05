@@ -144,9 +144,7 @@ export function Analytics() {
         </div>
 
         <div className="mt-6">
-          <ErrorBoundary>
-            {/* Transaction history can be added here if needed */}
-          </ErrorBoundary>
+          {/* Transaction history can be added here if needed */}
         </div>
       </div>
     </ErrorBoundary>
