@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAdvancedCharts } from '../hooks/useAdvancedCharts';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, CandlestickChart } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 export function AdvancedCharts() {
   const { candlestickData, timeframe, setTimeframe, indicators, toggleIndicator, indicatorData } = useAdvancedCharts();
