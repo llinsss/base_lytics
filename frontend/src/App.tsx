@@ -16,6 +16,7 @@ import {
   Marketplace,
   Advanced,
 } from './hooks/useLazyRoutes';
+import { Tools } from './pages/Tools';
 import { ChartSkeleton } from './components/LoadingSkeleton';
 import { WalletConnect } from './components/WalletConnect';
 import { NetworkSwitcher } from './components/NetworkSwitcher';
@@ -146,6 +147,16 @@ function Header() {
                 Advanced
               </Link>
               <Link
+                to="/tools"
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === '/tools'
+                  ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
+                  : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100'
+                  }`}
+                aria-current={location.pathname === '/tools' ? 'page' : undefined}
+              >
+                Tools
+              </Link>
+              <Link
                 to="/settings"
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${location.pathname === '/settings'
                   ? 'bg-base-100 text-base-700 dark:bg-base-600 dark:text-white'
@@ -225,6 +236,7 @@ function App() {
                           <Route path="/advanced" element={<Advanced />} />
                           <Route path="/activity" element={<Activity />} />
                           <Route path="/status" element={<Status />} />
+                          <Route path="/tools" element={<Tools />} />
                           <Route path="/settings" element={<Settings />} />
                         </Routes>
                       </Suspense>
