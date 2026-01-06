@@ -40,5 +40,6 @@ export { useYieldFarming } from './useYieldFarming';
 export { useGasTracker } from './useGasTracker';
 export { useTokenScreener } from './useTokenScreener';
 export { useDeFiProtocols } from './useDeFiProtocols';
+export { useRewards } from './useRewards';
 export { useTransactionQueue } from './useTransactionQueue';
 export type { QueuedTransaction } from './useTransactionQueue';
