@@ -14,6 +14,7 @@ import { PortfolioBacktest } from '../components/PortfolioBacktest';
 import { UserProfile } from '../components/UserProfile';
 import { LimitOrders } from '../components/LimitOrders';
 import { PortfolioRebalancing } from '../components/PortfolioRebalancing';
+import { RewardsShowcase } from '../components/RewardsShowcase';
 import { ChatSystem } from '../components/ChatSystem';
 
 export function Advanced() {
@@ -42,6 +43,7 @@ export function Advanced() {
     { id: 'profile', name: 'User Profile', icon: '👤' },
     { id: 'orders', name: 'Limit Orders', icon: '📋' },
     { id: 'rebalance', name: 'Auto Rebalancing', icon: '⚖️' },
+    { id: 'rewards', name: 'Rewards & NFTs', icon: '🏆' },
     { id: 'chat', name: 'Community Chat', icon: '💬' }
   ];
 
@@ -83,6 +85,7 @@ export function Advanced() {
         {activeFeature === 'profile' && <UserProfile />}
         {activeFeature === 'orders' && <LimitOrders />}
         {activeFeature === 'rebalance' && <PortfolioRebalancing />}
+        {activeFeature === 'rewards' && <RewardsShowcase />}
         {activeFeature === 'chat' && <ChatSystem />}
       </div>
     </div>
