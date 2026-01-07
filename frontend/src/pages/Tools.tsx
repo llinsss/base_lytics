@@ -6,6 +6,10 @@ import { AdvancedCharts } from '../components/AdvancedCharts';
 import { YieldFarmingCalculator } from '../components/YieldFarmingCalculator';
 import { GasTracker } from '../components/GasTracker';
 import { TokenScreener } from '../components/TokenScreener';
+import { AIRiskManager } from '../components/AIRiskManager';
+import { SocialTradingHub } from '../components/SocialTradingHub';
+import { AdvancedOptions } from '../components/AdvancedOptions';
+import { MarketIntelligence } from '../components/MarketIntelligence';
 import { DeFiProtocols } from '../components/DeFiProtocols';
 
 export function Tools() {
@@ -19,7 +23,11 @@ export function Tools() {
     { id: 'yield', label: '🌾 Yield Calculator', component: YieldFarmingCalculator },
     { id: 'gas', label: '⛽ Gas Tracker', component: GasTracker },
     { id: 'screener', label: '🔍 Token Screener', component: TokenScreener },
-    { id: 'defi', label: '🏦 DeFi Protocols', component: DeFiProtocols }
+    { id: 'defi', label: '🏦 DeFi Protocols', component: DeFiProtocols },
+    { id: 'risk', label: '🛡️ AI Risk Manager', component: AIRiskManager },
+    { id: 'social', label: '👥 Social Trading', component: SocialTradingHub },
+    { id: 'options', label: '📊 Options Trading', component: AdvancedOptions },
+    { id: 'intelligence', label: '🧠 Market Intel', component: MarketIntelligence }
   ];
 
   const ActiveComponent = tools.find(tool => tool.id === activeTab)?.component || PriceAlerts;
