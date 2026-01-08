@@ -7,6 +7,7 @@ import { TokenCard } from '../components/TokenCard';
 import { StakingCard } from '../components/StakingCard';
 import { AutoTradingBot } from '../components/AutoTradingBot';
 import { MultiChainBridge } from '../components/MultiChainBridge';
+import { OnChainInteractions } from '../components/OnChainInteractions';
 import { AdvancedPortfolioAnalytics } from '../components/AdvancedPortfolioAnalytics';
 import { NFTCard } from '../components/NFTCard';
 
@@ -43,6 +44,11 @@ export function ContractActivity() {
             🔗 Connected: <code className="font-mono">{address?.slice(0, 6)}...{address?.slice(-4)}</code>
           </p>
         </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <OnChainInteractions />
+        <LiveTransactionMonitor />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
