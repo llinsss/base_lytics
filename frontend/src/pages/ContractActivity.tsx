@@ -6,7 +6,7 @@ import { RewardsShowcase } from '../components/RewardsShowcase';
 import { TokenCard } from '../components/TokenCard';
 import { StakingCard } from '../components/StakingCard';
 import { AutoTradingBot } from '../components/AutoTradingBot';
-import { MultiChainBridge } from '../components/MultiChainBridge';
+import { MainnetDeFiInteractions } from '../components/MainnetDeFiInteractions';
 import { OnChainInteractions } from '../components/OnChainInteractions';
 import { AdvancedPortfolioAnalytics } from '../components/AdvancedPortfolioAnalytics';
 import { NFTCard } from '../components/NFTCard';
@@ -39,30 +39,29 @@ export function ContractActivity() {
         <p className="text-gray-600 dark:text-gray-400">
           Interact with smart contracts and monitor live blockchain activity
         </p>
-        <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-          <p className="text-sm text-blue-700 dark:text-blue-300">
-            🔗 Connected: <code className="font-mono">{address?.slice(0, 6)}...{address?.slice(-4)}</code>
+        <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span className="text-sm font-medium text-blue-700 dark:text-blue-300">Connected to Base Mainnet</span>
+          </div>
+          <p className="text-sm text-blue-600 dark:text-blue-400">
+            Wallet: <code className="font-mono bg-blue-100 dark:bg-blue-800 px-2 py-1 rounded">{address?.slice(0, 6)}...{address?.slice(-4)}</code>
           </p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <MainnetDeFiInteractions />
         <OnChainInteractions />
-        <LiveTransactionMonitor />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <LiveTransactionMonitor />
         <AutoTradingBot />
-        <MultiChainBridge />
       </div>
 
       <div className="mb-8">
         <AdvancedPortfolioAnalytics />
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <ContractDemo />
-        <LiveTransactionMonitor />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -75,38 +74,38 @@ export function ContractActivity() {
         <RewardsShowcase />
       </div>
 
-      <div className="card">
-        <h3 className="text-lg font-semibold mb-4 dark:text-white">What You Can Do</h3>
+      <div className="card mb-8">
+        <h3 className="text-lg font-semibold mb-4 dark:text-white">Available Features</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-            <div className="text-2xl mb-2">🪙</div>
-            <h4 className="font-semibold text-blue-700 dark:text-blue-300">Mint Tokens</h4>
+          <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+            <div className="text-2xl mb-2">🏦</div>
+            <h4 className="font-semibold text-blue-700 dark:text-blue-300">DeFi Protocols</h4>
             <p className="text-sm text-blue-600 dark:text-blue-400">
-              Create new BLT tokens and add them to your wallet
+              Real Uniswap V3 swaps and Aave lending on Base mainnet
             </p>
           </div>
           
-          <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-            <div className="text-2xl mb-2">🥩</div>
-            <h4 className="font-semibold text-green-700 dark:text-green-300">Stake & Earn</h4>
+          <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+            <div className="text-2xl mb-2">🔄</div>
+            <h4 className="font-semibold text-green-700 dark:text-green-300">Token Operations</h4>
             <p className="text-sm text-green-600 dark:text-green-400">
-              Stake tokens to earn rewards and unlock achievements
+              WETH wrapping, USDC transfers, and contract approvals
             </p>
           </div>
           
-          <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+          <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
             <div className="text-2xl mb-2">🏆</div>
-            <h4 className="font-semibold text-purple-700 dark:text-purple-300">Earn Rewards</h4>
+            <h4 className="font-semibold text-purple-700 dark:text-purple-300">NFT Rewards</h4>
             <p className="text-sm text-purple-600 dark:text-purple-400">
-              Collect NFT badges based on your trading activity
+              Earn ERC-1155 badges based on your trading activity
             </p>
           </div>
           
-          <div className="p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
+          <div className="p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200 dark:border-orange-800">
             <div className="text-2xl mb-2">📊</div>
-            <h4 className="font-semibold text-orange-700 dark:text-orange-300">Monitor Activity</h4>
+            <h4 className="font-semibold text-orange-700 dark:text-orange-300">Live Analytics</h4>
             <p className="text-sm text-orange-600 dark:text-orange-400">
-              Watch live transactions and contract interactions
+              Real-time transaction monitoring and portfolio analytics
             </p>
           </div>
         </div>
