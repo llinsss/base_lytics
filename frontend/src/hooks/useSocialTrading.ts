@@ -1,101 +1,99 @@
-import { useState } from 'react';
-import { useNotifications } from '../contexts/NotificationContext';
+import { useState, useEffect } from 'react';
+import { useAccount } from 'wagmi';
 
 interface Trader {
-  id: string;
+  address: string;
   name: string;
-  avatar: string;
-  followers: number;
   totalReturn: number;
   winRate: number;
-  copiers: number;
+  followers: number;
+  aum: number;
   verified: boolean;
 }
 
-interface Trade {
+interface Strategy {
   id: string;
-  trader: string;
-  action: 'buy' | 'sell';
-  asset: string;
-  amount: number;
+  creator: string;
+  name: string;
+  description: string;
   price: number;
-  timestamp: number;
-  profit?: number;
+  sales: number;
+  rating: number;
 }
 
 export function useSocialTrading() {
-  const { addNotification } = useNotifications();
-  const [topTraders] = useState<Trader[]>([
-    {
-      id: '1',
-      name: 'CryptoWhale',
-      avatar: '🐋',
-      followers: 12500,
-      totalReturn: 245.7,
-      winRate: 78,
-      copiers: 890,
-      verified: true
-    },
-    {
-      id: '2',
-      name: 'DeFiMaster',
-      avatar: '🚀',
-      followers: 8900,
-      totalReturn: 189.3,
-      winRate: 72,
-      copiers: 650,
-      verified: true
-    },
-    {
-      id: '3',
-      name: 'YieldHunter',
-      avatar: '🎯',
-      followers: 6700,
-      totalReturn: 156.8,
-      winRate: 69,
-      copiers: 420,
-      verified: false
-    }
-  ]);
-
-  const [recentTrades] = useState<Trade[]>([
-    {
-      id: '1',
-      trader: 'CryptoWhale',
-      action: 'buy',
-      asset: 'ETH',
-      amount: 5.2,
-      price: 2150,
-      timestamp: Date.now() - 300000,
-      profit: 8.5
-    },
-    {
-      id: '2',
-      trader: 'DeFiMaster',
-      action: 'sell',
-      asset: 'BLT',
-      amount: 1000,
-      price: 1.25,
-      timestamp: Date.now() - 600000,
-      profit: -2.1
-    }
-  ]);
-
+  const { address } = useAccount();
   const [following, setFollowing] = useState<string[]>([]);
+  const [copyTrading, setCopyTrading] = useState<Record<string, { enabled: boolean; allocation: number }>>({});
 
-  const followTrader = (traderId: string) => {
-    setFollowing(prev => [...prev, traderId]);
-    addNotification({ title: 'Now following trader!', type: 'success' });
+  useEffect(() => {
+    const saved = localStorage.getItem(`baselytics_following_${address}`);
+    if (saved) setFollowing(JSON.parse(saved));
+  }, [address]);
+
+  const getLeaderboard = async (): Promise<Trader[]> => {
+    // Fetch from backend or subgraph
+    return [
+      {
+        address: '0x1234...',
+        name: 'CryptoWhale',
+        totalReturn: 245.5,
+        winRate: 68.5,
+        followers: 1250,
+        aum: 5000000,
+        verified: true,
+      },
+    ];
   };
 
-  const unfollowTrader = (traderId: string) => {
-    setFollowing(prev => prev.filter(id => id !== traderId));
-    addNotification({ title: 'Unfollowed trader', type: 'info' });
+  const followTrader = (traderAddress: string) => {
+    setFollowing(prev => {
+      const updated = [...prev, traderAddress];
+      localStorage.setItem(`baselytics_following_${address}`, JSON.stringify(updated));
+      return updated;
+    });
   };
 
-  const copyTrade = (tradeId: string) => {
-    addNotification({ title: 'Trade copied successfully!', type: 'success' });
+  const unfollowTrader = (traderAddress: string) => {
+    setFollowing(prev => {
+      const updated = prev.filter(a => a !== traderAddress);
+      localStorage.setItem(`baselytics_following_${address}`, JSON.stringify(updated));
+      return updated;
+    });
   };
 
-  return { topTraders, recentTrades, following, followTrader, unfollowTrader, copyTrade };
+  const enableCopyTrading = (traderAddress: string, allocation: number) => {
+    setCopyTrading(prev => ({
+      ...prev,
+      [traderAddress]: { enabled: true, allocation },
+    }));
+  };
+
+  const disableCopyTrading = (traderAddress: string) => {
+    setCopyTrading(prev => ({
+      ...prev,
+      [traderAddress]: { enabled: false, allocation: 0 },
+    }));
+  };
+
+  const getStrategies = async (): Promise<Strategy[]> => {
+    // Fetch from marketplace
+    return [];
+  };
+
+  const purchaseStrategy = async (strategyId: string) => {
+    // Execute purchase transaction
+  };
+
+  return {
+    following,
+    copyTrading,
+    getLeaderboard,
+    followTrader,
+    unfollowTrader,
+    enableCopyTrading,
+    disableCopyTrading,
+    getStrategies,
+    purchaseStrategy,
+  };
 }
