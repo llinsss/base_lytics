@@ -1,0 +1,190 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SubscriptionTier {
+  FREE
+  PRO
+  ENTERPRISE
+}
+
+enum AlertType {
+  PRICE_ABOVE
+  PRICE_BELOW
+  WHALE_TRANSACTION
+  LARGE_TRANSFER
+  TOKEN_LAUNCH
+  CUSTOM
+}
+
+enum AlertStatus {
+  ACTIVE
+  TRIGGERED
+  DISABLED
+}
+
+model User {
+  id            String           @id @default(cuid())
+  walletAddress String           @unique
+  email         String?          @unique
+  username      String?
+  tier          SubscriptionTier @default(FREE)
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  
+  // Preferences
+  preferences   Json?            // Store user preferences as JSON
+  
+  // Relations
+  watchlists    Watchlist[]
+  alerts        Alert[]
+  portfolios    Portfolio[]
+  subscriptions Subscription[]
+  apiKeys       ApiKey[]
+  referrals     Referral[]       @relation("Referrer")
+  referredBy    Referral?        @relation("Referred")
+  
+  @@index([walletAddress])
+  @@index([email])
+}
+
+model Watchlist {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  items     Json     // Array of tokens/contracts/wallets
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+}
+
+model Alert {
+  id          String      @id @default(cuid())
+  userId      String
+  type        AlertType
+  status      AlertStatus @default(ACTIVE)
+  conditions  Json        // Alert conditions (price, amount, etc.)
+  lastTriggered DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId, status])
+}
+
+model Portfolio {
+  id          String   @id @default(cuid())
+  userId      String
+  snapshot    Json     // Portfolio snapshot data
+  totalValue  Float
+  timestamp   DateTime @default(now())
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId, timestamp])
+}
+
+model Subscription {
+  id              String           @id @default(cuid())
+  userId          String
+  tier            SubscriptionTier
+  stripeCustomerId String?         @unique
+  stripeSubscriptionId String?     @unique
+  status          String           // active, canceled, past_due, etc.
+  currentPeriodStart DateTime?
+  currentPeriodEnd   DateTime?
+  cancelAtPeriodEnd  Boolean       @default(false)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([stripeCustomerId])
+}
+
+model ApiKey {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  key         String   @unique
+  lastUsed    DateTime?
+  createdAt   DateTime @default(now())
+  expiresAt   DateTime?
+  isActive    Boolean  @default(true)
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([key])
+}
+
+model Referral {
+  id          String   @id @default(cuid())
+  referrerId  String
+  referredId  String   @unique
+  code        String   @unique
+  earnedUSD   Float    @default(0)
+  createdAt   DateTime @default(now())
+  
+  referrer    User     @relation("Referrer", fields: [referrerId], references: [id], onDelete: Cascade)
+  referred    User     @relation("Referred", fields: [referredId], references: [id], onDelete: Cascade)
+  
+  @@index([referrerId])
+  @@index([code])
+}
+
+model CachedPrice {
+  id          String   @id @default(cuid())
+  tokenAddress String
+  chainId     Int
+  price       Float
+  timestamp   DateTime @default(now())
+  source      String   // coingecko, coinmarketcap, etc.
+  
+  @@unique([tokenAddress, chainId])
+  @@index([tokenAddress, chainId, timestamp])
+}
+
+model CachedNFT {
+  id          String   @id @default(cuid())
+  contractAddress String
+  tokenId     String
+  chainId     Int
+  metadata    Json
+  floorPrice  Float?
+  timestamp   DateTime @default(now())
+  
+  @@unique([contractAddress, tokenId, chainId])
+  @@index([contractAddress, chainId])
+}
+
+model Transaction {
+  id          String   @id @default(cuid())
+  hash        String   @unique
+  from        String
+  to          String
+  value       String
+  chainId     Int
+  blockNumber Int
+  timestamp   DateTime
+  gasUsed     String?
+  gasPrice    String?
+  status      String
+  
+  @@index([from])
+  @@index([to])
+  @@index([chainId, timestamp])
+}
