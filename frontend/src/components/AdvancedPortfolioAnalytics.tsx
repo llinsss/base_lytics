@@ -1,135 +1,237 @@
-import React, { useState } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import React, { useState, useEffect } from 'react';
+import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
 
-export function AdvancedPortfolioAnalytics() {
+interface PortfolioAsset {
+  symbol: string;
+  amount: number;
+  value: number;
+  allocation: number;
+  pnl: number;
+  pnlPercent: number;
+}
+
+interface PortfolioMetrics {
+  totalValue: number;
+  totalPnL: number;
+  totalPnLPercent: number;
+  sharpeRatio: number;
+  maxDrawdown: number;
+  volatility: number;
+  beta: number;
+}
+
+export const AdvancedPortfolioAnalytics: React.FC = () => {
+  const [assets, setAssets] = useState<PortfolioAsset[]>([]);
+  const [metrics, setMetrics] = useState<PortfolioMetrics | null>(null);
+  const [performanceHistory, setPerformanceHistory] = useState<any[]>([]);
   const [timeframe, setTimeframe] = useState('7d');
 
-  const performanceData = [
-    { date: '2024-01-01', value: 10000, pnl: 0 },
-    { date: '2024-01-02', value: 10250, pnl: 250 },
-    { date: '2024-01-03', value: 9800, pnl: -200 },
-    { date: '2024-01-04', value: 11200, pnl: 1200 },
-    { date: '2024-01-05', value: 10900, pnl: 900 },
-    { date: '2024-01-06', value: 12100, pnl: 2100 },
-    { date: '2024-01-07', value: 11800, pnl: 1800 }
-  ];
+  useEffect(() => {
+    fetchPortfolioData();
+  }, [timeframe]);
 
-  const allocation = [
-    { name: 'ETH', value: 45, color: '#627EEA' },
-    { name: 'BTC', value: 25, color: '#F7931A' },
-    { name: 'USDC', value: 15, color: '#2775CA' },
-    { name: 'Other', value: 15, color: '#8B5CF6' }
-  ];
+  const fetchPortfolioData = async () => {
+    try {
+      const response = await fetch(`/api/portfolio/analytics?timeframe=${timeframe}`);
+      const data = await response.json();
+      setAssets(data.assets);
+      setMetrics(data.metrics);
+      setPerformanceHistory(data.performanceHistory);
+    } catch (error) {
+      console.error('Failed to fetch portfolio data:', error);
+    }
+  };
 
-  const metrics = {
-    totalValue: 11800,
-    totalPnL: 1800,
-    pnlPercent: 18.0,
-    sharpeRatio: 1.45,
-    maxDrawdown: -8.2,
-    winRate: 68.5,
-    avgWin: 245,
-    avgLoss: -120
+  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
+
+  const formatCurrency = (value: number) => 
+    new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    }).format(value);
+
+  const formatPercent = (value: number) => `${value >= 0 ? '+' : ''}${value.toFixed(2)}%`;
+
+  const getRiskLevel = (volatility: number) => {
+    if (volatility < 0.1) return { level: 'Low', color: 'text-green-500' };
+    if (volatility < 0.3) return { level: 'Medium', color: 'text-yellow-500' };
+    return { level: 'High', color: 'text-red-500' };
   };
 
   return (
     <div className="space-y-6">
-      <div className="card">
-        <div className="flex justify-between items-center mb-6">
-          <h3 className="text-xl font-bold dark:text-white">📊 Advanced Analytics</h3>
-          <div className="flex gap-2">
-            {['1d', '7d', '30d', '90d'].map(period => (
-              <button
-                key={period}
-                onClick={() => setTimeframe(period)}
-                className={`px-3 py-1 text-sm rounded ${
-                  timeframe === period ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-gray-700'
-                }`}
-              >
-                {period}
-              </button>
-            ))}
+      {/* Portfolio Overview */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+        <h2 className="text-2xl font-bold mb-4">Portfolio Overview</h2>
+        
+        {metrics && (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div className="text-center">
+              <div className="text-2xl font-bold">{formatCurrency(metrics.totalValue)}</div>
+              <div className="text-sm text-gray-500">Total Value</div>
+            </div>
+            <div className="text-center">
+              <div className={`text-2xl font-bold ${metrics.totalPnL >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                {formatPercent(metrics.totalPnLPercent)}
+              </div>
+              <div className="text-sm text-gray-500">Total P&L</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold">{metrics.sharpeRatio.toFixed(2)}</div>
+              <div className="text-sm text-gray-500">Sharpe Ratio</div>
+            </div>
+            <div className="text-center">
+              <div className={`text-2xl font-bold ${getRiskLevel(metrics.volatility).color}`}>
+                {getRiskLevel(metrics.volatility).level}
+              </div>
+              <div className="text-sm text-gray-500">Risk Level</div>
+            </div>
           </div>
+        )}
+
+        {/* Timeframe Selector */}
+        <div className="flex space-x-2 mb-4">
+          {['1d', '7d', '30d', '90d', '1y'].map(tf => (
+            <button
+              key={tf}
+              onClick={() => setTimeframe(tf)}
+              className={`px-3 py-1 rounded ${
+                timeframe === tf 
+                  ? 'bg-blue-500 text-white' 
+                  : 'bg-gray-200 dark:bg-gray-700'
+              }`}
+            >
+              {tf}
+            </button>
+          ))}
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <div className="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-            <p className="text-sm text-gray-600 dark:text-gray-400">Total Value</p>
-            <p className="text-xl font-bold text-green-600">${metrics.totalValue.toLocaleString()}</p>
-          </div>
-          <div className="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-            <p className="text-sm text-gray-600 dark:text-gray-400">P&L</p>
-            <p className="text-xl font-bold text-blue-600">+${metrics.totalPnL}</p>
-          </div>
-          <div className="text-center p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-            <p className="text-sm text-gray-600 dark:text-gray-400">Sharpe Ratio</p>
-            <p className="text-xl font-bold text-purple-600">{metrics.sharpeRatio}</p>
-          </div>
-          <div className="text-center p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
-            <p className="text-sm text-gray-600 dark:text-gray-400">Win Rate</p>
-            <p className="text-xl font-bold text-orange-600">{metrics.winRate}%</p>
-          </div>
-        </div>
-
-        <div className="h-64 mb-6">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={performanceData}>
+        {/* Performance Chart */}
+        {performanceHistory.length > 0 && (
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={performanceHistory}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
               <YAxis />
-              <Tooltip />
-              <Line type="monotone" dataKey="value" stroke="#3b82f6" strokeWidth={2} />
+              <Tooltip formatter={(value: number) => [formatPercent(value), 'Performance']} />
+              <Line 
+                type="monotone" 
+                dataKey="performance" 
+                stroke="#8884d8" 
+                strokeWidth={2}
+              />
             </LineChart>
+          </ResponsiveContainer>
+        )}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Asset Allocation */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+          <h3 className="text-xl font-bold mb-4">Asset Allocation</h3>
+          
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={assets}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                label={({ symbol, allocation }) => `${symbol} ${allocation.toFixed(1)}%`}
+                outerRadius={80}
+                fill="#8884d8"
+                dataKey="allocation"
+              >
+                {assets.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip formatter={(value: number) => [`${value.toFixed(2)}%`, 'Allocation']} />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Asset Performance */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+          <h3 className="text-xl font-bold mb-4">Asset Performance</h3>
+          
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={assets}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="symbol" />
+              <YAxis />
+              <Tooltip formatter={(value: number) => [formatPercent(value), 'P&L %']} />
+              <Bar dataKey="pnlPercent" fill="#8884d8">
+                {assets.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.pnlPercent >= 0 ? '#10b981' : '#ef4444'} />
+                ))}
+              </Bar>
+            </BarChart>
           </ResponsiveContainer>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="card">
-          <h4 className="font-semibold mb-4 dark:text-white">Portfolio Allocation</h4>
-          <div className="h-48">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={allocation}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={40}
-                  outerRadius={80}
-                  dataKey="value"
-                >
-                  {allocation.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        <div className="card">
-          <h4 className="font-semibold mb-4 dark:text-white">Risk Metrics</h4>
-          <div className="space-y-3">
-            <div className="flex justify-between">
-              <span className="text-gray-600 dark:text-gray-400">Max Drawdown</span>
-              <span className="font-medium text-red-500">{metrics.maxDrawdown}%</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600 dark:text-gray-400">Avg Win</span>
-              <span className="font-medium text-green-500">+${metrics.avgWin}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600 dark:text-gray-400">Avg Loss</span>
-              <span className="font-medium text-red-500">${metrics.avgLoss}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600 dark:text-gray-400">Volatility</span>
-              <span className="font-medium dark:text-white">12.4%</span>
-            </div>
-          </div>
+      {/* Detailed Asset Table */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+        <h3 className="text-xl font-bold mb-4">Asset Details</h3>
+        
+        <div className="overflow-x-auto">
+          <table className="w-full table-auto">
+            <thead>
+              <tr className="border-b">
+                <th className="text-left py-2">Asset</th>
+                <th className="text-right py-2">Amount</th>
+                <th className="text-right py-2">Value</th>
+                <th className="text-right py-2">Allocation</th>
+                <th className="text-right py-2">P&L</th>
+                <th className="text-right py-2">P&L %</th>
+              </tr>
+            </thead>
+            <tbody>
+              {assets.map((asset, index) => (
+                <tr key={index} className="border-b">
+                  <td className="py-2 font-semibold">{asset.symbol}</td>
+                  <td className="text-right py-2">{asset.amount.toFixed(4)}</td>
+                  <td className="text-right py-2">{formatCurrency(asset.value)}</td>
+                  <td className="text-right py-2">{asset.allocation.toFixed(1)}%</td>
+                  <td className={`text-right py-2 ${asset.pnl >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                    {formatCurrency(asset.pnl)}
+                  </td>
+                  <td className={`text-right py-2 ${asset.pnlPercent >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                    {formatPercent(asset.pnlPercent)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
+
+      {/* Risk Metrics */}
+      {metrics && (
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+          <h3 className="text-xl font-bold mb-4">Risk Metrics</h3>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="text-center">
+              <div className="text-lg font-semibold">{(metrics.volatility * 100).toFixed(2)}%</div>
+              <div className="text-sm text-gray-500">Volatility</div>
+            </div>
+            <div className="text-center">
+              <div className="text-lg font-semibold">{(metrics.maxDrawdown * 100).toFixed(2)}%</div>
+              <div className="text-sm text-gray-500">Max Drawdown</div>
+            </div>
+            <div className="text-center">
+              <div className="text-lg font-semibold">{metrics.beta.toFixed(2)}</div>
+              <div className="text-sm text-gray-500">Beta</div>
+            </div>
+            <div className="text-center">
+              <div className="text-lg font-semibold">{metrics.sharpeRatio.toFixed(2)}</div>
+              <div className="text-sm text-gray-500">Sharpe Ratio</div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
-}
+};
