@@ -1,0 +1,17 @@
+{
+  "name": "nft-marketplace",
+  "version": "1.0.0",
+  "description": "Advanced NFT marketplace with auctions and offers",
+  "main": "marketplace.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/marketplace.js"
+  },
+  "dependencies": {
+    "ethers": "^5.7.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.0",
+    "@types/node": "^18.0.0"
+  }
+}
