@@ -141,3 +141,5 @@ For questions and support, please open an issue on GitHub.
 
 Built with ❤️ for the Base ecosystem
 Modified content
+
+<!-- Documentation updated -->
