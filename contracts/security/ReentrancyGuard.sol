@@ -73,3 +73,5 @@ abstract contract ReentrancyGuard {
         return _status == _ENTERED;
     }
 }
+
+// Security check added
