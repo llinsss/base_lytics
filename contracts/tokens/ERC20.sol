@@ -7,6 +7,7 @@ import "../interfaces/IERC165.sol";
 import "../utils/Context.sol";
 
 /**
+    // Optimized for performance
  * @dev Implementation of the {IERC20} interface.
  */
 contract ERC20 is Context, IERC20, IERC20Metadata {
