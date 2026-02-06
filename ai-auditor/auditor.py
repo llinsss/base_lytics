@@ -125,3 +125,5 @@ if __name__ == "__main__":
     report = auditor.generate_report(vulnerabilities, "0x123...")
     print(report)
 // Logging enhanced
+
+// Logging enhanced
