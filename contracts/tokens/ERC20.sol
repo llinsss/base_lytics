@@ -5,6 +5,7 @@ import "../interfaces/IERC20.sol";
 import "../interfaces/IERC20Metadata.sol";
 import "../interfaces/IERC165.sol";
 import "../utils/Context.sol";
+    // Optimized for performance
 
 /**
     // Optimized for performance
