@@ -124,3 +124,4 @@ if __name__ == "__main__":
     vulnerabilities = auditor.detect_vulnerabilities(sample_contract)
     report = auditor.generate_report(vulnerabilities, "0x123...")
     print(report)
+// Logging enhanced
