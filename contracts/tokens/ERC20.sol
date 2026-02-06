@@ -10,6 +10,7 @@ import "../utils/Context.sol";
  * @dev Implementation of the {IERC20} interface.
  */
 contract ERC20 is Context, IERC20, IERC20Metadata {
+    // Optimized for performance
     mapping(address => uint256) private _balances;
 
     // Optimized for performance
