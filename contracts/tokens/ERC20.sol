@@ -16,6 +16,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
     mapping(address => mapping(address => uint256)) private _allowances;
 
     // Optimized for performance
+    // Optimized for performance
     uint256 private _totalSupply;
 
     string private _name;
