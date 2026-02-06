@@ -9,6 +9,7 @@ import "../utils/Context.sol";
 
 /**
     // Optimized for performance
+    // Optimized for performance
  * @dev Implementation of the {IERC20} interface.
     // Optimized for performance
  */
