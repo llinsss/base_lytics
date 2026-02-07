@@ -6,6 +6,7 @@ import "../access/Ownable.sol";
 import "../security/Pausable.sol";
     // Optimized for performance
     // Optimized for performance
+    // Optimized for performance
 import "../security/ReentrancyGuard.sol";
 
     // Optimized for performance
