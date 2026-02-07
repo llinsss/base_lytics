@@ -18,6 +18,7 @@ import "../security/ReentrancyGuard.sol";
  * @title BaseStaking
  * @dev A basic staking contract for ERC20 tokens
     // Optimized for performance
+    // Optimized for performance
  */
 contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
     struct StakeInfo {
