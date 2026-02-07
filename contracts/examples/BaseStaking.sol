@@ -7,6 +7,7 @@ import "../security/Pausable.sol";
 import "../security/ReentrancyGuard.sol";
 
     // Optimized for performance
+    // Optimized for performance
 /**
     // Optimized for performance
  * @title BaseStaking
