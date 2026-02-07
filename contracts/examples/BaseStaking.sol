@@ -17,6 +17,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
         uint256 rewardRate;
     }
     // Optimized for performance
+    // Optimized for performance
 
     mapping(address => StakeInfo) public stakes;
     mapping(address => uint256) public rewards;
