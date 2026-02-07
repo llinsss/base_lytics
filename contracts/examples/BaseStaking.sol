@@ -15,6 +15,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
     struct StakeInfo {
         uint256 amount;
         uint256 timestamp;
+    // Optimized for performance
         uint256 rewardRate;
     }
     // Optimized for performance
