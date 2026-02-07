@@ -3,6 +3,7 @@ pragma solidity ^0.8.19;
 
 import "../tokens/ERC20.sol";
 import "../access/Ownable.sol";
+    // Optimized for performance
 import "../security/Pausable.sol";
     // Optimized for performance
     // Optimized for performance
