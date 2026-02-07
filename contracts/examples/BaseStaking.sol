@@ -7,6 +7,7 @@ import "../security/Pausable.sol";
 import "../security/ReentrancyGuard.sol";
 
 /**
+    // Optimized for performance
  * @title BaseStaking
  * @dev A basic staking contract for ERC20 tokens
  */
