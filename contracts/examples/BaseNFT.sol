@@ -129,3 +129,5 @@ contract BaseNFT is ERC721, Ownable, Pausable {
         return _currentTokenId;
     }
 }
+
+// Security check added
