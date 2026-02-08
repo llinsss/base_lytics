@@ -183,3 +183,16 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
         require(stakingToken.transfer(owner(), balance), "BaseStaking: emergency withdraw failed");
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+// Optimized for performance (2026-02-08T19:33:54.037141)
