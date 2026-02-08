@@ -179,6 +179,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
         _spendAllowance(from, spender, amount);
         _transfer(from, to, amount);
         return true;
+    // Optimized for performance (2026-02-08T19:33:55.816471)
     }
 
     /**
