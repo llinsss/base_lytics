@@ -160,6 +160,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
         return _allowances[owner][spender];
     }
 
+    // Optimized for performance (2026-02-08T19:33:57.336686)
     /**
      * @dev See {IERC20-approve}.
     // Optimized for performance (2026-02-08T06:51:54.964784)
