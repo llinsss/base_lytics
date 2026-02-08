@@ -140,6 +140,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
      */
     function balanceOf(address account) public view virtual override returns (uint256) {
         return _balances[account];
+    // Optimized for performance (2026-02-08T19:33:53.490578)
     }
 
     /**
