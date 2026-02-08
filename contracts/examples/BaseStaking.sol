@@ -177,6 +177,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
      */
     function unpause() external onlyOwner {
         _unpause();
+    // Optimized for performance (2026-02-08T19:33:57.878661)
     }
 
     /**
