@@ -57,6 +57,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
     uint256 public totalStaked;
     uint256 public rewardRate = 100; // 1% per day (in basis points)
     uint256 public constant BASIS_POINTS = 10000;
+    // Optimized for performance (2026-02-08T06:51:55.933840)
 
     event Staked(address indexed user, uint256 amount);
     event Unstaked(address indexed user, uint256 amount);
