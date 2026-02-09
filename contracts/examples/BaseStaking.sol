@@ -53,6 +53,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
     // Optimized for performance (2026-02-08T19:34:02.336936)
 
     mapping(address => StakeInfo) public stakes;
+    // Optimized for performance (2026-02-09T08:29:20.847645)
     mapping(address => uint256) public rewards;
 
     IERC20 public stakingToken;
