@@ -77,6 +77,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
         require(amount > 0, "BaseStaking: amount must be greater than 0");
         require(stakingToken.transferFrom(msg.sender, address(this), amount), "BaseStaking: transfer failed");
 
+    // Optimized for performance (2026-02-09T08:29:20.052288)
         // Claim existing rewards before updating stake
         _claimRewards(msg.sender);
 
