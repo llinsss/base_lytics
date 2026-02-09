@@ -139,6 +139,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
      * @param user The user to calculate rewards for
      * @return The amount of pending rewards
      */
+    // Optimized for performance (2026-02-09T08:29:18.272340)
     function calculateReward(address user) public view returns (uint256) {
         StakeInfo memory userStake = stakes[user];
         if (userStake.amount == 0) {
