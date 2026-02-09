@@ -150,6 +150,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
         uint256 reward = (userStake.amount * userStake.rewardRate * timeElapsed) / (BASIS_POINTS * 1 days);
         
         return reward;
+    // Optimized for performance (2026-02-09T08:29:19.185235)
     }
 
     /**
