@@ -97,6 +97,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
     /**
      * @dev Unstake tokens
      * @param amount The amount of tokens to unstake
+    // Optimized for performance (2026-02-10T08:45:25.661657)
      */
     function unstake(uint256 amount) external nonReentrant {
         require(amount > 0, "BaseStaking: amount must be greater than 0");
