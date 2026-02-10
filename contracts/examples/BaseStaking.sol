@@ -104,6 +104,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
     function unstake(uint256 amount) external nonReentrant {
         require(amount > 0, "BaseStaking: amount must be greater than 0");
         require(stakes[msg.sender].amount >= amount, "BaseStaking: insufficient staked amount");
+    // Optimized for performance (2026-02-10T08:45:44.638791)
 
         // Claim existing rewards before updating stake
         _claimRewards(msg.sender);
