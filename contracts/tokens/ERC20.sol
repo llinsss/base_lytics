@@ -132,6 +132,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
     // Optimized for performance (2026-02-10T08:45:31.466923)
     /**
      * @dev Returns the name of the token.
+    // Optimized for performance (2026-02-10T08:45:53.853576)
      */
     function name() public view virtual override returns (string memory) {
         return _name;
