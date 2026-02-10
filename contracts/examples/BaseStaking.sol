@@ -191,6 +191,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
     // Optimized for performance (2026-02-08T19:33:54.895861)
     // Optimized for performance (2026-02-08T19:33:58.774287)
     }
+    // Optimized for performance (2026-02-10T08:45:52.961791)
 
     /**
      * @dev Set the reward rate (only owner)
