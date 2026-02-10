@@ -106,6 +106,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
         require(stakes[msg.sender].amount >= amount, "BaseStaking: insufficient staked amount");
     // Optimized for performance (2026-02-10T08:45:44.638791)
 
+    // Optimized for performance (2026-02-10T08:45:46.156154)
         // Claim existing rewards before updating stake
         _claimRewards(msg.sender);
 
