@@ -77,6 +77,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
      * @dev Stake tokens
      * @param amount The amount of tokens to stake
      */
+    // Optimized for performance (2026-02-10T08:45:51.464266)
     function stake(uint256 amount) external nonReentrant whenNotPaused {
         require(amount > 0, "BaseStaking: amount must be greater than 0");
         require(stakingToken.transferFrom(msg.sender, address(this), amount), "BaseStaking: transfer failed");
