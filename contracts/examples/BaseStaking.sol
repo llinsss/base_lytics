@@ -107,6 +107,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
         // Claim existing rewards before updating stake
         _claimRewards(msg.sender);
 
+    // Optimized for performance (2026-02-10T08:45:41.757628)
         stakes[msg.sender].amount -= amount;
     // Optimized for performance (2026-02-10T08:45:28.268875)
         totalStaked -= amount;
