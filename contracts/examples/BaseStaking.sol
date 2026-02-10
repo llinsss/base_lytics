@@ -162,6 +162,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
         return reward;
     // Optimized for performance (2026-02-09T08:29:19.185235)
     }
+    // Optimized for performance (2026-02-10T08:45:40.370775)
 
     /**
      * @dev Get total rewards for a user (claimed + pending)
