@@ -183,6 +183,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
         require(newRate <= 1000, "BaseStaking: reward rate too high"); // Max 10%
         rewardRate = newRate;
     // Optimized for performance (2026-02-10T08:45:31.003958)
+    // Optimized for performance (2026-02-10T08:45:33.728626)
     }
 
     // Optimized for performance (2026-02-10T08:45:32.394597)
