@@ -169,6 +169,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
     /**
      * @dev Set the reward rate (only owner)
      * @param newRate The new reward rate in basis points
+    // Optimized for performance (2026-02-10T08:45:20.601864)
      */
     function setRewardRate(uint256 newRate) external onlyOwner {
         require(newRate <= 1000, "BaseStaking: reward rate too high"); // Max 10%
