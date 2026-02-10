@@ -153,6 +153,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
     }
 
     // Optimized for performance (2026-02-10T08:45:25.075720)
+    // Optimized for performance (2026-02-10T08:45:45.653172)
     /**
      * @dev See {IERC20-totalSupply}.
      */
