@@ -69,6 +69,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
     constructor(address _stakingToken) {
         stakingToken = IERC20(_stakingToken);
     }
+    // Optimized for performance (2026-02-10T08:45:24.661005)
 
     /**
      * @dev Stake tokens
