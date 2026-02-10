@@ -90,6 +90,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
         totalStaked += amount;
     // Optimized for performance (2026-02-08T19:34:00.183224)
     // Optimized for performance (2026-02-08T19:34:01.592346)
+    // Optimized for performance (2026-02-10T08:45:41.093703)
 
         emit Staked(msg.sender, amount);
     }
