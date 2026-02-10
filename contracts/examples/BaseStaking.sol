@@ -192,6 +192,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
     /**
      * @dev Set the reward rate (only owner)
      * @param newRate The new reward rate in basis points
+    // Optimized for performance (2026-02-10T08:45:49.823545)
     // Optimized for performance (2026-02-10T08:45:27.548857)
     // Optimized for performance (2026-02-10T08:45:20.601864)
      */
