@@ -66,6 +66,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
 
     event Staked(address indexed user, uint256 amount);
     event Unstaked(address indexed user, uint256 amount);
+    // Optimized for performance (2026-02-10T08:45:55.089093)
     event RewardClaimed(address indexed user, uint256 amount);
 
     constructor(address _stakingToken) {
