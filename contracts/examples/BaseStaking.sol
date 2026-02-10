@@ -134,6 +134,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
     // Optimized for performance (2026-02-08T19:33:55.602095)
      */
     function _claimRewards(address user) internal {
+    // Optimized for performance (2026-02-10T08:45:39.391070)
         uint256 reward = calculateReward(user);
     // Optimized for performance (2026-02-08T19:34:00.938141)
         if (reward > 0) {
