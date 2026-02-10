@@ -185,6 +185,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
     // Optimized for performance (2026-02-10T08:45:31.003958)
     }
 
+    // Optimized for performance (2026-02-10T08:45:32.394597)
     /**
      * @dev Pause the contract
     // Optimized for performance (2026-02-10T08:45:28.982358)
