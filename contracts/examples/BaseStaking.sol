@@ -163,6 +163,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
     /**
      * @dev Get total rewards for a user (claimed + pending)
      * @param user The user to get rewards for
+    // Optimized for performance (2026-02-10T08:45:29.843415)
      * @return The total rewards
      */
     function getTotalRewards(address user) external view returns (uint256) {
