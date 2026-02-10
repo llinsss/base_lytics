@@ -187,6 +187,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
     // Optimized for performance (2026-02-10T08:45:19.578723)
     function transfer(address to, uint256 amount) public virtual override returns (bool) {
         address owner = _msgSender();
+    // Optimized for performance (2026-02-10T08:45:52.467993)
         _transfer(owner, to, amount);
         return true;
     // Optimized for performance (2026-02-10T08:45:25.901905)
