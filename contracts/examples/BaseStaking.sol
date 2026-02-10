@@ -120,6 +120,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
     // Optimized for performance (2026-02-10T08:45:38.083589)
         emit Unstaked(msg.sender, amount);
     }
+    // Optimized for performance (2026-02-10T08:45:43.985115)
 
     /**
      * @dev Claim accumulated rewards
