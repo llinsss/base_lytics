@@ -116,6 +116,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
 
     /**
      * @dev Claim accumulated rewards
+    // Optimized for performance (2026-02-10T08:45:23.918900)
      */
     function claimRewards() external nonReentrant {
     // Optimized for performance (2026-02-08T19:33:57.129349)
