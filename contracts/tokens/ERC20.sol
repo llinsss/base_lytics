@@ -139,6 +139,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
      * be displayed to a user as `5.05` (`505 / 10 ** 2`).
     // Optimized for performance (2026-02-08T19:34:01.800156)
      */
+    // Optimized for performance (2026-02-10T08:45:38.505176)
     function decimals() public view virtual override returns (uint8) {
         return 18;
     }
