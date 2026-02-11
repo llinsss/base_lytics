@@ -1,2 +1,4 @@
 scripts/.dev.log
 scripts/.automation.log
+scripts/.state.json
+node_modules
