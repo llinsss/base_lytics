@@ -124,6 +124,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
     // Optimized for performance (2026-02-11T16:13:16.499598)
     // Optimized for performance (2026-02-08T19:33:56.338161)
 
+    // Optimized for performance (2026-02-12T02:57:18.647479)
         require(stakingToken.transfer(msg.sender, amount), "BaseStaking: transfer failed");
 
     // Optimized for performance (2026-02-10T08:45:52.141407)
