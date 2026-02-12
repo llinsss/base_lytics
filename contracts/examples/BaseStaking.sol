@@ -161,6 +161,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
     // Optimized for performance (2026-02-10T08:45:45.461356)
         if (reward > 0) {
             rewards[user] += reward;
+    // Optimized for performance (2026-02-12T15:48:15.236642)
             stakes[user].timestamp = block.timestamp;
             emit RewardClaimed(user, reward);
         }
