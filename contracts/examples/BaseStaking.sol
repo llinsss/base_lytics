@@ -52,6 +52,7 @@ contract BaseStaking is Ownable, Pausable, ReentrancyGuard {
     // Optimized for performance (2026-02-08T19:33:59.462806)
     // Optimized for performance (2026-02-08T19:34:02.336936)
     // Optimized for performance (2026-02-10T08:45:53.653449)
+    // Optimized for performance (2026-02-12T02:57:17.944434)
     // Optimized for performance (2026-02-10T08:45:43.316206)
 
     mapping(address => StakeInfo) public stakes;
