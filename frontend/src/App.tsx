@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import { WagmiProvider } from 'wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createConfig, http } from 'wagmi';
-import { baseSepolia, base } from 'wagmi/chains';
+import { baseSepolia, base, celo } from 'wagmi/chains';
 import { injected, walletConnect } from 'wagmi/connectors';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import {
@@ -33,10 +33,11 @@ import { NotificationContainer } from './components/notifications/NotificationCo
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { useTheme } from './hooks/useTheme';
 import { loadDeploymentAddresses } from './utils/loadDeployments';
+import { useMiniPay } from './hooks/useMiniPay';
 
 // Wagmi configuration
 const config = createConfig({
-  chains: [baseSepolia, base],
+  chains: [baseSepolia, base, celo],
   connectors: [
     injected(),
     walletConnect({
@@ -46,6 +47,7 @@ const config = createConfig({
   transports: {
     [baseSepolia.id]: http(),
     [base.id]: http(),
+    [celo.id]: http('https://forno.celo.org'),
   },
 });
 
@@ -212,6 +214,11 @@ function Footer() {
   );
 }
 
+function MiniPayInit() {
+  useMiniPay();
+  return null;
+}
+
 function App() {
   // Load contract addresses on app start
   React.useEffect(() => {
@@ -225,6 +232,7 @@ function App() {
           <SettingsProvider>
             <NotificationProvider>
               <UserProfileProvider>
+                <MiniPayInit />
                 <Router>
                 <div className="min-h-screen bg-gray-50 dark:bg-black">
                   <Header />
