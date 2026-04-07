@@ -12,6 +12,7 @@ import { redisService } from './services/redis.service';
 // Routes
 import authRoutes from './routes/auth.routes';
 import userRoutes from './routes/user.routes';
+import agentRoutes from './routes/agent.routes';
 
 // Load environment variables
 dotenv.config();
@@ -72,6 +73,7 @@ app.get('/health', async (req, res) => {
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/agent', agentRoutes);
 
 // 404 handler
 app.use(notFoundHandler);
