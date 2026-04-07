@@ -16,6 +16,7 @@ import { LimitOrders } from '../components/LimitOrders';
 import { PortfolioRebalancing } from '../components/PortfolioRebalancing';
 import { RewardsShowcase } from '../components/RewardsShowcase';
 import { ChatSystem } from '../components/ChatSystem';
+import { AgentChat } from '../components/AgentChat';
 
 export function Advanced() {
   const { isConnected } = useAccount();
@@ -30,6 +31,7 @@ export function Advanced() {
   }
 
   const features = [
+    { id: 'ai-agent', name: 'AI Agent', icon: '🧠' },
     { id: 'ai-bot', name: 'AI Trading Bot', icon: '🤖' },
     { id: 'bridge', name: 'Cross-Chain Bridge', icon: '🌉' },
     { id: 'options', name: 'Options Trading', icon: '📊' },
@@ -72,6 +74,7 @@ export function Advanced() {
       </div>
 
       <div className="min-h-screen">
+        {activeFeature === 'ai-agent' && <AgentChat />}
         {activeFeature === 'ai-bot' && <AITradingBot />}
         {activeFeature === 'bridge' && <CrossChainBridge />}
         {activeFeature === 'options' && <OptionsTrading />}
